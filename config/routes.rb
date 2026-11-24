@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  root "chats#index"
+  resources :chats, only: [ :create, :show, :destroy ] do
+    resources :messages, only: [ :create ]
+  end
+
+  resources :favs, only: [ :index, :create, :show, :destroy ]
+
   devise_for :users
   root to: "chats#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -12,5 +19,4 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  # root "posts#index"
 end
