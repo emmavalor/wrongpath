@@ -1,50 +1,32 @@
-
 <div class="card mx-auto border-0 shadow"
      style="max-width: 650px; border-radius: 18px; overflow: hidden;">
 
   <img
-    src="https://placehold.co/1200x800?text=Lorem+Ipsum"
+    src="<%= @gem[:image_url] %>"
     class="card-img-top"
-    alt="Lorem Ipsum"
-    style="height: 340px; object-fit: cover;">
+    alt="<%= @gem[:title] %>"
+    style="height: 250px; object-fit: cover;">
 
   <div class="card-body p-4 p-md-5">
 
     <span class="badge rounded-pill bg-light text-dark border mb-3 px-3 py-2">
-      LOREM IPSUM
+      CATEGORY
     </span>
 
     <h2 class="fw-bold mb-3" style="font-size: 2rem; line-height: 1.2;">
-      Lorem Ipsum Dolor Sit Amet
+      <%= @gem[:title] %>
     </h2>
 
     <p class="text-muted mb-4">
       <i class="fa-solid fa-location-dot"></i>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      <%= @gem[:address] %>
     </p>
 
     <hr class="mb-4">
 
     <p class="card-text text-secondary"
        style="font-size: 1.05rem; line-height: 1.8;">
-
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      laboris nisi ut aliquip ex ea commodo consequat.
-
-      <br><br>
-
-      Duis aute irure dolor in reprehenderit in voluptate velit esse
-      cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt
-      mollit anim id est laborum.
-
-      <br><br>
-
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.
-
+      <%= @gem[:description] %>
     </p>
 
   </div>
