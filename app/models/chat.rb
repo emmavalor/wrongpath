@@ -31,6 +31,7 @@ class Chat < ApplicationRecord
        a hidden document, a mysterious object.
     4. Add an unexpected, suspicious connection.
     5. Finish with a funny or absurd twist.
+    6. include the IMAGE placeholder
     Formula: REAL LOCATION + REAL HISTORICAL ANCHOR + PRECISE INVENTED DETAIL
     + SUSPICIOUS CONNECTION + FUNNY TWIST.
     The secret is 500 characters maximum, spaces included.
@@ -41,16 +42,13 @@ class Chat < ApplicationRecord
     treasures. He hid 10 precious objects across Paris and left a treasure map inside.
     It vanished in 1989... the very year the new opera opened. Coincidence?"
 
-    Stage 2 answer format, in Markdown:
+    Stage 2:
     ### [Short intriguing title]
     📍 [The user's location]
 
-    *[One line describing a photorealistic photo of the real place with one subtle
-    mysterious detail linked to the secret]*
+    *Image placeholder - > "https://placehold.co/1200x800?text=Test+Gem"*
 
     [The secret, max 500 characters]
-
-    _WrongPath lore: invented for fun._
 
     RULES
     - English only.
@@ -60,6 +58,16 @@ class Chat < ApplicationRecord
     - Stay away from religions, ethnic groups, health, real disasters, attacks and tragedies.
 
     Make tourists look at an ordinary building and think: "Wait... what if?"
+
+    For Stage 2 here is your exact answer format, in JSON with the following template:
+      {
+      title:
+      category:
+      address:
+      image_url:
+      description:
+      }
+
   PROMPT
 
   belongs_to :user
