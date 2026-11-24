@@ -1,0 +1,89 @@
+$purple: #5B3DF5;
+$purple-light: #ECE8FF;
+$chat-gray: #F4F4F4;
+
+.chat-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chat-header {
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  p { color: #6c757d; margin-bottom: 0; font-size: 14px; }
+}
+
+// column-reverse keeps the scroll at the bottom (newest message visible)
+.chat-box {
+  background: $chat-gray;
+  border-radius: 16px;
+  padding: 16px;
+  height: 60vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-line;
+  p:last-child { margin-bottom: 0; }
+}
+
+.message-assistant {
+  align-self: flex-start;
+  background: white;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.message-user {
+  align-self: flex-end;
+  background: $purple-light;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  .chat-input { flex-grow: 1; margin-bottom: 0; }
+  .form-control { border-radius: 24px; padding: 10px 16px; }
+  .btn-send {
+    background: $purple;
+    color: white;
+    border: none;
+    border-radius: 24px;
+    padding: 10px 20px;
+    &:hover { background: darken($purple, 8%); color: white; }
+  }
+}
+
+.category-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-category {
+  background: white;
+  border: 1px solid $purple;
+  color: $purple;
+  border-radius: 24px;
+  padding: 8px 20px;
+  &:hover { background: $purple-light; color: $purple; }
+}
