@@ -1,5 +1,5 @@
 class Fav < ApplicationRecord
   belongs_to :user
 
-  validates :title, :lat, :long, :address, :description, :image_url, presence: true
+  validates :title, :address, :description, :image_url, :category, presence: true
 end
