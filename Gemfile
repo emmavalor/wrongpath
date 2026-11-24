@@ -74,3 +74,6 @@ end
 
 # Own gems
 gem "devise"
+
+gem "ruby_llm", "~> 2.2"
+gem "redcarpet", "~> 3.6"
