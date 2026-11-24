@@ -8,7 +8,7 @@
     <div class="chat-messages">
       <% @chat.messages.order(:created_at).each do |message| %>
         <div class="message message-<%= message.try(:role) || "assistant" %>">
-          <%= message.content %>
+          <%= raw(render_markdown(message.content)) %>
         </div>
       <% end %>
     </div>
