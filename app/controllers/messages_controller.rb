@@ -10,9 +10,21 @@ class MessagesController < ApplicationController
     if @message.save
       ruby_llm_chat = RubyLLM.chat
       response = ruby_llm_chat.with_instructions(instructions).ask(@message.content)
-      Message.create(role: "assistant", content: response.content, chat: @chat)
 
-      redirect_to chat_path(@chat)
+      begin
+        JSON.parse(response.content)
+      rescue JSON::ParserError
+        redirect_to chat_path(@chat), alert: "Invalid JSON generated."
+        return
+      end
+
+      assistant_message = Message.create!(
+        role: "assistant",
+        content: response.content,
+        chat: @chat
+      )
+
+      redirect_to fav_path(assistant_message)
     else
       render "chats/show", status: :unprocessable_entity
     end
