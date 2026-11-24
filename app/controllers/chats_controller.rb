@@ -4,6 +4,9 @@ class ChatsController < ApplicationController
   end
 
   def create
+  @chat = Chat.new(user: current_user)
+  address = "#{params["address address-search"]}, #{params[:zipcode]} #{params[:city]}, #{params[:country]}"
+
   end
 
   def show

@@ -1,26 +1,33 @@
 
 <div id="homepage-container">
 
-  <div id="map-container">
-  </div>
+    <div data-controller="map" data-map-api-key-value="<%= ENV['MAPBOX_KEY'] %>" id="map-container"></div>
 
-  <div id="adress-container">
 
-    <form class="my-2">
-      <label for="input" class="visually-hidden">City</label>
-      <input type="text" placeholder="Enter an address" id="input" class="form-control flex-grow-1">
-      <a href="" id="currentLocation" aria-label="Use current location"><i class="bi bi-geo-alt"></i></a>
-      <input type="submit" value="Unveil secrets !" class="btn btn-primary mt-2 w-100">
-    </form>
+  <div id="address-container">
+    <%= form_with url: chats_path, class: "my-2", data: { turbo: false } do |form| %>
+      <%#= form.label :address, "City", class: "visually-hidden" %>
+      <%= form.text_field :address, class: "input mb12 bg-white", autocomplete: "address-line1", placeholder: "Address" %>
 
+      <%= form.text_field :city, class: "input mb12 bg-white visually-hidden", autocomplete: "address-level2", placeholder: "City" %>
+      <%= form.text_field :zipcode, class: "input mb12 bg-white visually-hidden", autocomplete: "postal-code", placeholder: "ZIP / Postcode" %>
+      <%= form.text_field :country, class: "input mb12 bg-white visually-hidden", autocomplete: "country-name", placeholder: "Country" %>
+
+      <%= form.submit "Unveil secrets !", class: "btn btn-primary mt-2 w-100" %>
+    <% end %>
   </div>
 
 </div>
 
 
-    <!-- <form class="my-2"> -->
-      <!-- <label for="input" class="visually-hidden">City</label> -->
-      <!-- <input type="text" placeholder="Enter an address" id="input" class="form-control flex-grow-1"> -->
-      <!-- <a href="" id="currentLocation" class="position" aria-label="Use current location"><i class="bi bi-geo-alt"></i></a> -->
-      <!-- <input type="submit" value="Get the weather" class="btn btn-primary ms-3"> -->
-    <!-- </form> -->
+<script>
+
+  const ACCESS_TOKEN = '<%= ENV['MAPBOX_KEY'] %>';
+  window.addEventListener('load', () => {
+
+      const collection = mapboxsearch.autofill({
+          accessToken: ACCESS_TOKEN
+      });
+  });
+
+</script>
