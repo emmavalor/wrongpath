@@ -1,2 +1,13 @@
-<h1>Chats#show</h1>
-<p>Find me in app/views/chats/show.html.erb</p>
+<div class="container py-4">
+  <h1>WrongPath</h1>
+  <p>Chat #<%= @chat.id %></p>
+
+  <% @chat.messages.order(:created_at).each do |message| %>
+    <p><%= message.content %></p>
+  <% end %>
+
+  <%= simple_form_for [@chat, @message] do |f| %>
+    <%= f.input :content, label: false, placeholder: "Say something here..." %>
+    <%= f.button :submit, "Send", class: "btn btn-primary border-radius 8px" %>
+  <% end %>
+</div>
