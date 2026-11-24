@@ -1,1 +1,12 @@
-// Specific CSS for your home-page
+
+
+#homepage-container {
+  margin: 0 10%;
+}
+
+#map-container {
+  width: 100%;
+  height: 60vh;
+  background-image: asset-url('fake_map');
+  background-size: cover;
+}// Specific CSS for your home-page
