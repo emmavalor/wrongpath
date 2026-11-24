@@ -1,0 +1,20 @@
+.user-form-bg {
+  background-image: url(bg_login_form.png);
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  color: white;
+}
+
+.user_password div {
+  color: white;
+}
+
+.login-link a{
+  text-decoration: none!important;
+  color: white;
+}
+
+.login-link a:hover {
+  text-decoration: underline!important;
+}
