@@ -2,9 +2,9 @@
      style="max-width: 650px; border-radius: 18px; overflow: hidden;">
 
   <img
-    src="<%= @gem[:image_url] %>"
+    src="<%= temp_gem[:image_url] %>"
     class="card-img-top"
-    alt="<%= @gem[:title] %>"
+    alt="<%= gem[:title] %>"
     style="height: 250px; object-fit: cover;">
 
   <div class="card-body p-4 p-md-5">
@@ -14,19 +14,19 @@
     </span>
 
     <h2 class="fw-bold mb-3" style="font-size: 2rem; line-height: 1.2;">
-      <%= @gem[:title] %>
+      <%= gem[:title] %>
     </h2>
 
     <p class="text-muted mb-4">
       <i class="fa-solid fa-location-dot"></i>
-      <%= @gem[:address] %>
+      <%= gem[:address] %>
     </p>
 
     <hr class="mb-4">
 
     <p class="card-text text-secondary"
        style="font-size: 1.05rem; line-height: 1.8;">
-      <%= @gem[:description] %>
+      <%= gem[:description] %>
     </p>
 
   </div>
