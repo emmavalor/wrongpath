@@ -76,4 +76,7 @@ end
 gem "devise"
 
 gem "ruby_llm", "~> 2.2"
-gem "redcarpet", "~> 3.6"
+
+gem "kramdown", "~> 2.6"
+gem "rouge", "~> 5.1"
+gem "kramdown-parser-gfm", "~> 1.1"
