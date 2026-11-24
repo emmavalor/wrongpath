@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_11_24_134555) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_24_150905) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -23,8 +24,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_24_134555) do
 
   create_table "favs", force: :cascade do |t|
     t.string "title"
-    t.float "lat"
-    t.float "long"
     t.string "address"
     t.text "description"
     t.boolean "saved"
@@ -32,6 +31,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_24_134555) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "category"
     t.index ["user_id"], name: "index_favs_on_user_id"
   end
 
