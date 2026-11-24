@@ -1,19 +1,24 @@
 class FavsController < ApplicationController
+  before_action :authenticate_user!
   def index
   end
 
   def create
   end
 
-def show
-  @temp_gem = {
-    title: "The Baker Who Fooled Napoleon",
-    category: "History",
-    address: "68 Avenue Simon Bolivar, Paris 19e, France",
-    image_url: "https://placehold.co/1200x800?text=Test+Gem",
-    description: "Discover the fascinating story of a baker who supposedly fooled Napoleon."
-  }
-end
+  def show
+    @message = Message.joins(:chat)
+                      .where(chats: { user_id: current_user.id }, role: "assistant")
+                      .find(params[:id])
+
+    @temp_gem = JSON.parse(@message.content, symbolize_names: true)
+
+    @category = @message.chat.messages
+                        .where(role: "user")
+                        .where("messages.id < ?", @message.id)
+                        .order(id: :desc)
+                        .pick(:content)
+  end
 
   def destroy
   end

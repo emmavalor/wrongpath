@@ -18,11 +18,13 @@
       Go to
     </button>
 
-    <button class="btn btn-outline-dark px-4">
+    <%= button_to chat_messages_path(@message.chat),
+          params: { message: { content: @category } },
+          method: :post,
+          class: "btn btn-outline-dark px-4" do %>
       <i class="fa-solid fa-rotate me-2"></i>
       Another one
-    </button>
-
+    <% end %>
   </div>
 
 </div>
