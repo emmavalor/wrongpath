@@ -24,8 +24,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_094145) do
 
   create_table "favs", force: :cascade do |t|
     t.string "title"
-    t.float "lat"
-    t.float "long"
     t.string "address"
     t.text "description"
     t.boolean "saved"
@@ -33,6 +31,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_094145) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "category"
     t.index ["user_id"], name: "index_favs_on_user_id"
   end
 
