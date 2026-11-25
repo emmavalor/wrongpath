@@ -3,9 +3,14 @@ class ChatsController < ApplicationController
   end
 
   def create
-    raise
     @chat = Chat.new(user: current_user)
-    @chat.input_address = "#{params['address address-search']}, #{params[:zipcode]} #{params[:city]}, #{params[:country]}"
+    @chat.input_address = full_address
+
+    if @chat.save
+      redirect_to chat_path(@chat)
+    else
+      redirect_to root_path, alert: "Please enter an address to unveil its secrets."
+    end
   end
 
   def show
@@ -14,5 +19,9 @@ class ChatsController < ApplicationController
   end
 
   def destroy
+  end
+
+  def full_address
+    [params["address address-search"], params[:zipcode], params[:city], params[:country]].compact_blank.join(", ")
   end
 end
