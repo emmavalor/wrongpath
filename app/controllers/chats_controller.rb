@@ -4,8 +4,9 @@ class ChatsController < ApplicationController
   end
 
   def create
-  @chat = Chat.new(user: current_user)
-  address = "#{params["address address-search"]}, #{params[:zipcode]} #{params[:city]}, #{params[:country]}"
+    raise
+    @chat = Chat.new(user: current_user)
+    @chat.input_address = "#{params["address address-search"]}, #{params[:zipcode]} #{params[:city]}, #{params[:country]}"
 
   end
 
@@ -14,4 +15,5 @@ class ChatsController < ApplicationController
 
   def destroy
   end
+
 end
