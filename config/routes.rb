@@ -4,7 +4,11 @@ Rails.application.routes.draw do
     resources :messages, only: [ :create ]
   end
 
-  resources :favs, only: [ :index, :create, :show, :destroy ]
+  resources :favs, only: [ :index, :create, :show, :destroy ] do
+    member do
+      get :navigate
+    end
+  end
 
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
