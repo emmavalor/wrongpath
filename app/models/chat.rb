@@ -72,6 +72,7 @@ class Chat < ApplicationRecord
 
   belongs_to :user
   has_many :messages, dependent: :destroy
+  validates :input_address, presence: true
 
   # "Paris" until the team adds the address column "3 Rue de la Paix, Paris" until the team adds the address column
   def location
