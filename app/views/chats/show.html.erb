@@ -1,9 +1,4 @@
 <div class="chat-page">
-  <div class="chat-header">
-    <h1>Wr?ng Path</h1>
-    <p>Your secret guide to Paris</p>
-  </div>
-
   <div class="chat-box">
     <div class="chat-messages" id="messages">
       <% @chat.messages.each do |message| %>
@@ -16,11 +11,11 @@
     <% Chat::CATEGORIES.each do |category| %>
       <%= button_to category, chat_messages_path(@chat),
             params: { message: { content: category } },
-            class: "btn btn-category" %>
+            class: "btn-wrongpath" %>
     <% end %>
   </div>
 
-  <div id="new_message_container">
+  <%# <div id="new_message_container">
     <%= render "messages/form", chat: @chat, message: @message %>
-  </div>
+  <%# </div>  %>
 </div>

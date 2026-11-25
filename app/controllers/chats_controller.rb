@@ -31,8 +31,6 @@ class ChatsController < ApplicationController
   def first_message
     message_content = "Welcome to WrongPath 👋🚶‍♂️, I see you are at #{@chat.input_address}!
                       I found a few fun facts SUPER relevant to you.
-                      Here are 3 mains categories for you to choose from:
-                      #{Chat::CATEGORIES.join(',')}
                       Which category do you want to explore?"
     @chat.messages.create!(
       content: message_content,

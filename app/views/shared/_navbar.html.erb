@@ -37,7 +37,9 @@
           <li>
             <%= link_to "My favs", favs_path, class: "dropdown-item" %>
           </li>
+
           <li><hr class="dropdown-divider"></li>
+
           <li>
             <%= link_to "Log out", destroy_user_session_path,
                 data: { turbo_method: :delete },
@@ -45,6 +47,7 @@
           </li>
         <% else %>
           <li><hr class="dropdown-divider"></li>
+
           <li>
             <%= link_to "Sign up / Log in",
                 new_user_session_path,
@@ -55,9 +58,10 @@
       </ul>
     </div>
 
-    <!-- Logo / nom centré -->
-    <div class="position-absolute top-50 start-50 translate-middle d-flex align-items-center"
-        style="pointer-events: none; white-space: nowrap;">
+    <!-- Logo / nom centré et cliquable vers la home -->
+    <%= link_to root_path,
+        class: "position-absolute top-50 start-50 translate-middle d-flex align-items-center text-decoration-none",
+        style: "white-space: nowrap; cursor: pointer;" do %>
 
       <span style="
         font-family: 'Anton', sans-serif;
@@ -86,15 +90,11 @@
         Path<span style="color: #F28C45;">.</span>
       </span>
 
-    </div>
+    <% end %>
 
     <!-- Photo de profil non cliquable -->
     <div class="d-flex align-items-center">
-      <% if user_signed_in? %>
-        <%= image_tag "Leo", class: "avatar", alt: "Profile" %>
-      <% else %>
-        <%= image_tag "Victor", class: "avatar", alt: "Profile" %>
-      <% end %>
+      <%= image_tag "Emma", class: "avatar", alt: "Profile" if user_signed_in? %>
     </div>
 
   </div>

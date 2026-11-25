@@ -23,13 +23,7 @@ class MessagesController < ApplicationController
         end
       end
     else
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.update("new_message_container", partial: "messages/form",
-                                                                            locals: { chat: @chat, message: @message })
-        end
-        format.html { render "chats/show", status: :unprocessable_entity }
-      end
+      redirect_to chat_path(@chat), alert: @message.errors.full_messages.to_sentence
     end
   end
 
