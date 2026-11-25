@@ -16,7 +16,7 @@
     <% Chat::CATEGORIES.each do |category| %>
       <%= button_to category, chat_messages_path(@chat),
             params: { message: { content: category } },
-            class: "btn btn-category" %>
+            class: "btn-wrongpath" %>
     <% end %>
   </div>
 
