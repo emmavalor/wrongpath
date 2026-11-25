@@ -5,11 +5,9 @@
   </div>
 
   <div class="chat-box">
-    <div class="chat-messages">
-      <% @chat.messages.order(:created_at).each do |message| %>
-        <div class="message message-<%= message.try(:role) || "assistant" %>">
-          <%= raw(render_markdown(message.content)) %>
-        </div>
+    <div class="chat-messages" id="messages">
+      <% @chat.messages.each do |message| %>
+        <%= render "messages/message", message: message %>
       <% end %>
     </div>
   </div>
@@ -22,10 +20,7 @@
     <% end %>
   </div>
 
-  <%= simple_form_for [@chat, @message], html: { class: "chat-form" } do |f| %>
-    <%= f.input :content, as: :string, label: false,
-          placeholder: "Say something here...",
-          wrapper_html: { class: "chat-input" } %>
-    <%= f.button :submit, "Send", class: "btn-send" %>
-  <% end %>
+  <div id="new_message_container">
+    <%= render "messages/form", chat: @chat, message: @message %>
+  </div>
 </div>
