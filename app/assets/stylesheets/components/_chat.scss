@@ -11,8 +11,22 @@ $chat-gray: #F4F4F4;
 }
 
 .chat-header {
-  h1 { font-size: 24px; margin-bottom: 4px; }
-  p { color: #6c757d; margin-bottom: 0; font-size: 14px; }
+  width: fit-content;
+  margin: auto;
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 4px;
+    color: #FCF5EB;
+    font-family: Anton;
+  }
+  p {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-family: Maven pro;
+  }
 }
 
 // column-reverse keeps the scroll at the bottom (newest message visible)
