@@ -25,7 +25,7 @@ class ChatsController < ApplicationController
   private
 
   def full_address
-    [params["address address-search"], params[:zipcode], params[:city], params[:country]].compact_blank.join(", ")
+    params["address"]
   end
 
   def first_message
