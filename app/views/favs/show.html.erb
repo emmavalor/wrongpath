@@ -5,7 +5,12 @@
 
   <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
 
-    <button class="btn btn-dark px-4">
+    <button
+      class="btn btn-dark px-4"
+      type="button"
+      onclick="
+        new Audio('/sounds/heroku.mp3').play();
+      ">
       <i class="fa-regular fa-bookmark me-2"></i>
       Save
     </button>
@@ -17,7 +22,7 @@
         new Audio('/sounds/fah.mp3').play();
         setTimeout(() => {
           window.location.href = '<%= navigate_fav_path(@message) %>';
-        }, 300);
+        }, 600);
       ">
       <i class="fa-solid fa-location-arrow me-2"></i>
       Go to
