@@ -11,23 +11,42 @@ $chat-gray: #F4F4F4;
 }
 
 .chat-header {
-  h1 { font-size: 24px; margin-bottom: 4px; }
-  p { color: #6c757d; margin-bottom: 0; font-size: 14px; }
+  width: fit-content;
+  margin: auto;
+  h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 4px;
+    color: #FCF5EB;
+    font-family: Anton;
+  }
+  p {
+    text-align: center;
+    color: #6c757d;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-family: Maven pro;
+  }
 }
 
 // column-reverse keeps the scroll at the bottom (newest message visible)
 .chat-box {
   border-radius: 16px;
+  margin: auto;
   padding: 16px 0;
   overflow-y: auto;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 
 .chat-messages {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 12px;
+}
+
+.container-user {
+  align-self: flex-end;
 }
 
 .message-container {
@@ -40,9 +59,7 @@ $chat-gray: #F4F4F4;
   padding: 8px 12px;
   border-radius: 16px;
   font-size: 14px;
-  line-height: 1.4;
-  white-space: pre-line;
-  // height: fit-content;
+  line-height: 2.5;
   p:last-child { margin-bottom: 0; }
 }
 
@@ -55,7 +72,6 @@ $chat-gray: #F4F4F4;
 }
 
 .message-user {
-  align-self: flex-end;
   background: $light;
   border-bottom-right-radius: 4px;
 }

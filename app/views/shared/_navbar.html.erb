@@ -94,11 +94,7 @@
 
     <!-- Photo de profil non cliquable -->
     <div class="d-flex align-items-center">
-      <% if user_signed_in? %>
-        <%= image_tag "Leo", class: "avatar", alt: "Profile" %>
-      <% else %>
-        <%= image_tag "Victor", class: "avatar", alt: "Profile" %>
-      <% end %>
+      <%= image_tag "Emma", class: "avatar", alt: "Profile" if user_signed_in? %>
     </div>
 
   </div>
