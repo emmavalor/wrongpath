@@ -19,6 +19,16 @@ class FavsController < ApplicationController
                         .pick(:content)
   end
 
+  def navigate
+    @message = Message.joins(:chat)
+                      .where(chats: { user_id: current_user.id }, role: "assistant")
+                      .find(params[:id])
+
+    @temp_gem = JSON.parse(@message.content, symbolize_names: true)
+
+    @destination_address = @temp_gem[:address]
+    @destination_title = @temp_gem[:title]
+  end
   def destroy
   end
 end

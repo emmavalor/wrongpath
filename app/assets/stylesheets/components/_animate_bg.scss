@@ -1,0 +1,21 @@
+html, body { min-height: 100%; margin: 0; background: #0A1830; }
+
+.app-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.app-bg svg { display: block; width: 100%; height: 100%; }
+
+.app-content { position: relative; z-index: 1; min-height: 100vh; }
+
+/* animation des traits rouges */
+.roads polyline, .trail, .comet { fill: none; stroke-linejoin: round; stroke-linecap: round; }
+.trail { stroke: #FF2A12; stroke-opacity: .12; }
+.comet {
+  stroke: #FF3A1A;
+  filter: url(#glow);
+  stroke-dasharray: var(--len) 1;
+  stroke-dashoffset: var(--len);
+  animation: run var(--dur) linear var(--delay) infinite;
+}
+@keyframes run { from { stroke-dashoffset: var(--len); } to { stroke-dashoffset: -1; } }
+@media (prefers-reduced-motion: reduce) {
+  .comet { animation: none; stroke-dasharray: none; stroke-opacity: .3; }
+}

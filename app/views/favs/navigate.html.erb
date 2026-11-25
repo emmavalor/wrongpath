@@ -1,0 +1,919 @@
+
+<%= stylesheet_link_tag "https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css" %>
+
+<style>
+  .navigation-banner {
+    background: #202B38;
+    color: white;
+    padding: 22px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    min-height: 115px;
+  }
+
+  .navigation-banner h2 {
+    font-size: 25px;
+    margin: 0;
+  }
+
+  #map {
+    width: 100%;
+    height: 600px;
+    border-radius: 12px;
+    background: #e9e9e9;
+  }
+
+  .navigation-details {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    margin-top: 15px;
+    text-align: center;
+  }
+
+  .navigation-details h3 {
+    font-size: 25px;
+    margin: 0;
+  }
+
+  .navigation-details p {
+    color: #777;
+    margin: 4px 0 0;
+    font-size: 13px;
+  }
+
+  #navigation-status {
+    white-space: pre-line;
+  }
+
+  @media (max-width: 768px) {
+    #map {
+      height: 65vh;
+    }
+  }
+</style>
+
+<div class="container mt-4 mb-5">
+
+  <h1>Let's go!</h1>
+
+  <h2><%= @destination_title %></h2>
+  <p><%= @destination_address %></p>
+
+  <meta name="mapbox-token" content="<%= ENV['MAPBOX_KEY'] %>">
+
+  <!-- Navigation instructions -->
+  <div class="navigation-banner">
+    <div class="d-flex align-items-center gap-3">
+
+      <i id="maneuver-icon"
+         class="fa-solid fa-location-arrow fa-2x"></i>
+
+      <div>
+        <h2 id="instruction">Preparing your route...</h2>
+
+        <p id="instruction-distance">
+          Waiting for GPS
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Map overview -->
+  <div id="map"></div>
+
+  <!-- Navigation information -->
+  <div class="navigation-details">
+
+    <div>
+      <h3 id="remaining-time">--</h3>
+      <p>Time remaining</p>
+    </div>
+
+    <div>
+      <h3 id="remaining-distance">--</h3>
+      <p>Distance remaining</p>
+    </div>
+
+  </div>
+
+  <!-- Controls -->
+  <div class="text-center mt-4">
+
+    <button id="start-navigation"
+            class="btn btn-dark px-4"
+            disabled>
+      <i class="fa-solid fa-location-arrow me-2"></i>
+      Start navigation
+    </button>
+
+    <button id="stop-navigation"
+            class="btn btn-outline-dark px-4"
+            disabled>
+      <i class="fa-solid fa-xmark me-2"></i>
+      End navigation
+    </button>
+
+  </div>
+
+  <p id="navigation-status" class="text-center text-muted mt-3">
+    Preparing your route...
+  </p>
+
+</div>
+
+<script>
+document.addEventListener("turbo:load", initializeNavigation);
+
+function initializeNavigation() {
+
+  const mapElement = document.getElementById("map");
+
+  if (!mapElement || mapElement.dataset.initialized) return;
+
+  mapElement.dataset.initialized = "true";
+
+  const token = document.querySelector(
+    'meta[name="mapbox-token"]'
+  ).content;
+
+  const destinationAddress = "<%= j @destination_address %>";
+  const destinationTitle = "<%= j @destination_title %>";
+
+  const startButton = document.getElementById("start-navigation");
+  const stopButton = document.getElementById("stop-navigation");
+
+  const instructionElement = document.getElementById("instruction");
+  const instructionDistanceElement = document.getElementById("instruction-distance");
+  const remainingTimeElement = document.getElementById("remaining-time");
+  const remainingDistanceElement = document.getElementById("remaining-distance");
+  const statusElement = document.getElementById("navigation-status");
+  const maneuverIcon = document.getElementById("maneuver-icon");
+
+  let map = null;
+  let userMarker = null;
+  let destinationMarker = null;
+
+  let destinationCoordinates = null;
+  let currentLocation = null;
+
+  let route = null;
+  let steps = [];
+  let stepDistances = [];
+
+  let routeMetrics = [];
+  let routeLength = 0;
+
+  let currentSegmentIndex = 0;
+  let currentProgress = 0;
+  let currentStepIndex = 0;
+
+  let watchId = null;
+  let offRouteCount = 0;
+  let lastRerouteTime = 0;
+
+  let navigationStarted = false;
+  let navigationStopped = false;
+  let rerouting = false;
+
+  // -----------------------------------------
+  // LOAD MAPBOX
+  // -----------------------------------------
+
+  function loadMapbox() {
+
+    if (window.mapboxgl) {
+      return Promise.resolve();
+    }
+
+    return new Promise((resolve, reject) => {
+
+      const script = document.createElement("script");
+
+      script.src =
+        "https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js";
+
+      script.onload = resolve;
+
+      script.onerror = () => {
+        reject(new Error("Unable to load Mapbox."));
+      };
+
+      document.head.appendChild(script);
+    });
+  }
+
+  function setStatus(message) {
+    statusElement.textContent = message;
+  }
+
+  // -----------------------------------------
+  // DISTANCE CALCULATIONS
+  // -----------------------------------------
+
+  function distanceBetween(a, b) {
+
+    const R = 6371000;
+
+    const rad = value => value * Math.PI / 180;
+
+    const lat1 = rad(a[1]);
+    const lat2 = rad(b[1]);
+
+    const deltaLat = rad(b[1] - a[1]);
+    const deltaLng = rad(b[0] - a[0]);
+
+    const value =
+      Math.sin(deltaLat / 2) ** 2 +
+      Math.cos(lat1) * Math.cos(lat2) *
+      Math.sin(deltaLng / 2) ** 2;
+
+    return 2 * R * Math.atan2(
+      Math.sqrt(value),
+      Math.sqrt(1 - value)
+    );
+  }
+
+  function formatDistance(distance) {
+
+    if (distance < 1000) {
+      return `${Math.round(distance)} m`;
+    }
+
+    return `${(distance / 1000).toFixed(1)} km`;
+  }
+
+  function formatDuration(seconds) {
+
+    const minutes = Math.round(seconds / 60);
+
+    if (minutes < 60) {
+      return `${minutes} min`;
+    }
+
+    return `${Math.floor(minutes / 60)} h ${minutes % 60} min`;
+  }
+
+  // -----------------------------------------
+  // GEOCODING
+  // -----------------------------------------
+
+  async function getDestination() {
+
+    const url =
+      `https://api.mapbox.com/search/geocode/v6/forward?q=${encodeURIComponent(destinationAddress)}&access_token=${token}&limit=1`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Destination geocoding failed.");
+    }
+
+    const data = await response.json();
+
+    if (!data.features || !data.features.length) {
+      throw new Error("Destination not found.");
+    }
+
+    return data.features[0].geometry.coordinates;
+  }
+
+  // -----------------------------------------
+  // DIRECTIONS API
+  // -----------------------------------------
+
+  async function getRoute(start, destination) {
+
+    const url =
+      `https://api.mapbox.com/directions/v5/mapbox/walking/${start.join(",")};${destination.join(",")}?geometries=geojson&overview=full&steps=true&language=fr&access_token=${token}`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Mapbox Directions request failed.");
+    }
+
+    const data = await response.json();
+
+    if (!data.routes || !data.routes.length) {
+      throw new Error("No walking route found.");
+    }
+
+    return data.routes[0];
+  }
+
+  // -----------------------------------------
+  // ROUTE METRICS
+  // -----------------------------------------
+
+  function buildRouteMetrics() {
+
+    const coordinates = route.geometry.coordinates;
+
+    routeMetrics = [];
+    routeLength = 0;
+
+    for (let i = 0; i < coordinates.length - 1; i++) {
+
+      const start = coordinates[i];
+      const end = coordinates[i + 1];
+
+      const length = distanceBetween(start, end);
+
+      routeMetrics.push({
+        start,
+        end,
+        length,
+        cumulative: routeLength
+      });
+
+      routeLength += length;
+    }
+
+    stepDistances = [];
+
+    let cumulative = 0;
+
+    steps.forEach(step => {
+
+      stepDistances.push(cumulative);
+
+      cumulative += step.distance;
+    });
+  }
+
+  // -----------------------------------------
+  // MAP MATCHING
+  // -----------------------------------------
+
+  function matchPositionToRoute(position) {
+
+    const longitude = position.coords.longitude;
+    const latitude = position.coords.latitude;
+
+    const cosLatitude = Math.cos(latitude * Math.PI / 180);
+
+    const firstSegment = Math.max(
+      0,
+      currentSegmentIndex - 5
+    );
+
+    const lastSegment = Math.min(
+      routeMetrics.length - 1,
+      currentSegmentIndex + 150
+    );
+
+    let bestMatch = null;
+    let bestDistance = Infinity;
+
+    for (let i = firstSegment; i <= lastSegment; i++) {
+
+      const segment = routeMetrics[i];
+
+      const ax = (segment.start[0] - longitude) *
+        111320 * cosLatitude;
+
+      const ay = (segment.start[1] - latitude) * 110540;
+
+      const bx = (segment.end[0] - longitude) *
+        111320 * cosLatitude;
+
+      const by = (segment.end[1] - latitude) * 110540;
+
+      const dx = bx - ax;
+      const dy = by - ay;
+
+      const denominator = dx * dx + dy * dy;
+
+      let t = denominator === 0
+        ? 0
+        : -(ax * dx + ay * dy) / denominator;
+
+      t = Math.max(0, Math.min(1, t));
+
+      const projectedX = ax + t * dx;
+      const projectedY = ay + t * dy;
+
+      const distance = Math.sqrt(
+        projectedX ** 2 + projectedY ** 2
+      );
+
+      const progress =
+        segment.cumulative + t * segment.length;
+
+      const backwardPenalty =
+        progress < currentProgress - 15
+          ? (currentProgress - 15 - progress) * 2
+          : 0;
+
+      const score = distance + backwardPenalty;
+
+      if (score < bestDistance) {
+
+        bestDistance = score;
+
+        bestMatch = {
+          segmentIndex: i,
+          distance,
+          progress
+        };
+      }
+    }
+
+    if (!bestMatch) return null;
+
+    currentSegmentIndex = bestMatch.segmentIndex;
+
+    currentProgress = Math.max(
+      currentProgress - 8,
+      bestMatch.progress
+    );
+
+    currentProgress = Math.min(
+      currentProgress,
+      routeLength
+    );
+
+    return bestMatch;
+  }
+
+  // -----------------------------------------
+  // UPDATE INSTRUCTIONS
+  // -----------------------------------------
+
+  function updateInstructions() {
+
+    if (!steps.length) return;
+
+    while (
+      currentStepIndex < steps.length - 1 &&
+      stepDistances[currentStepIndex + 1] <
+        currentProgress + 12
+    ) {
+      currentStepIndex++;
+    }
+
+    const nextIndex = Math.min(
+      currentStepIndex + 1,
+      steps.length - 1
+    );
+
+    const nextStep = steps[nextIndex];
+
+    const distanceToManeuver = Math.max(
+      0,
+      stepDistances[nextIndex] - currentProgress
+    );
+
+    if (
+      nextStep.maneuver.type === "arrive" &&
+      routeLength - currentProgress < 20
+    ) {
+
+      instructionElement.textContent = "You've arrived!";
+      instructionDistanceElement.textContent = destinationTitle;
+
+      remainingDistanceElement.textContent = "0 m";
+      remainingTimeElement.textContent = "0 min";
+
+      setStatus("You have reached your destination.");
+
+      return;
+    }
+
+    instructionElement.textContent =
+      nextStep.maneuver.instruction;
+
+    instructionDistanceElement.textContent =
+      `In ${formatDistance(distanceToManeuver)}`;
+
+    const remainingDistance = Math.max(
+      0,
+      routeLength - currentProgress
+    );
+
+    const remainingDuration =
+      routeLength > 0
+        ? route.duration * remainingDistance / routeLength
+        : 0;
+
+    remainingDistanceElement.textContent =
+      formatDistance(remainingDistance);
+
+    remainingTimeElement.textContent =
+      formatDuration(remainingDuration);
+
+    const modifier = nextStep.maneuver.modifier || "";
+
+    if (nextStep.maneuver.type === "arrive") {
+
+      maneuverIcon.className =
+        "fa-solid fa-flag-checkered fa-2x";
+
+    } else if (modifier.includes("left")) {
+
+      maneuverIcon.className =
+        "fa-solid fa-arrow-left fa-2x";
+
+    } else if (modifier.includes("right")) {
+
+      maneuverIcon.className =
+        "fa-solid fa-arrow-right fa-2x";
+
+    } else {
+
+      maneuverIcon.className =
+        "fa-solid fa-arrow-up fa-2x";
+    }
+  }
+
+  // -----------------------------------------
+  // DISPLAY ROUTE
+  // -----------------------------------------
+
+  function displayRoute() {
+
+    map.addSource("route", {
+      type: "geojson",
+      data: {
+        type: "Feature",
+        properties: {},
+        geometry: route.geometry
+      }
+    });
+
+    map.addLayer({
+      id: "route",
+      type: "line",
+      source: "route",
+      paint: {
+        "line-color": "#16a34a",
+        "line-width": 6,
+        "line-opacity": 0.9
+      }
+    });
+
+    destinationMarker = new mapboxgl.Marker({
+      color: "#16a34a"
+    })
+      .setLngLat(destinationCoordinates)
+      .setPopup(
+        new mapboxgl.Popup().setText(destinationTitle)
+      )
+      .addTo(map);
+
+    userMarker = new mapboxgl.Marker({
+      color: "#2563eb"
+    })
+      .setLngLat(currentLocation)
+      .addTo(map);
+
+    const bounds = new mapboxgl.LngLatBounds();
+
+    bounds.extend(currentLocation);
+    bounds.extend(destinationCoordinates);
+
+    map.fitBounds(bounds, {
+      padding: 80,
+      maxZoom: 16
+    });
+  }
+
+  // -----------------------------------------
+  // UPDATE ROUTE AFTER REROUTING
+  // -----------------------------------------
+
+  function installRoute(newRoute) {
+
+    route = newRoute;
+
+    steps = route.legs[0].steps;
+
+    currentProgress = 0;
+    currentSegmentIndex = 0;
+    currentStepIndex = 0;
+
+    buildRouteMetrics();
+
+    map.getSource("route").setData({
+      type: "Feature",
+      properties: {},
+      geometry: route.geometry
+    });
+
+    updateInstructions();
+  }
+
+  // -----------------------------------------
+  // AUTOMATIC REROUTING
+  // -----------------------------------------
+
+  async function reroute(position) {
+
+    if (rerouting || navigationStopped) return;
+
+    if (Date.now() - lastRerouteTime < 15000) return;
+
+    rerouting = true;
+    lastRerouteTime = Date.now();
+
+    setStatus("You left the route. Finding a new path...");
+
+    try {
+
+      const location = [
+        position.coords.longitude,
+        position.coords.latitude
+      ];
+
+      const newRoute = await getRoute(
+        location,
+        destinationCoordinates
+      );
+
+      installRoute(newRoute);
+
+      offRouteCount = 0;
+
+      setStatus("New route calculated. Continue walking.");
+
+    } catch (error) {
+
+      console.error(error);
+
+      setStatus("Unable to recalculate your route.");
+
+    } finally {
+
+      rerouting = false;
+    }
+  }
+
+  // -----------------------------------------
+  // LIVE GPS TRACKING
+  // -----------------------------------------
+
+  function handlePosition(position) {
+
+    if (!navigationStarted || navigationStopped) return;
+
+    if (position.coords.accuracy > 50) {
+
+      setStatus(
+        `GPS accuracy is low (${Math.round(position.coords.accuracy)} m).`
+      );
+
+      return;
+    }
+
+    currentLocation = [
+      position.coords.longitude,
+      position.coords.latitude
+    ];
+
+    userMarker.setLngLat(currentLocation);
+
+    const match = matchPositionToRoute(position);
+
+    if (!match) return;
+
+    if (match.distance > 40) {
+
+      offRouteCount++;
+
+      if (offRouteCount >= 3) {
+        reroute(position);
+      } else {
+        setStatus("You seem to be leaving the route...");
+      }
+
+    } else {
+
+      offRouteCount = 0;
+
+      setStatus("Navigation active. Follow the instructions.");
+    }
+
+    const cameraOptions = {
+      center: currentLocation,
+      zoom: 18,
+      pitch: 50,
+      duration: 800
+    };
+
+    if (
+      position.coords.heading !== null &&
+      position.coords.heading !== undefined &&
+      position.coords.speed > 0.5
+    ) {
+
+      cameraOptions.bearing = position.coords.heading;
+    }
+
+    map.easeTo(cameraOptions);
+
+    updateInstructions();
+  }
+
+  // -----------------------------------------
+  // PREPARE ROUTE OVERVIEW
+  // -----------------------------------------
+
+  async function prepareRoute() {
+
+    try {
+
+      if (!token || !token.startsWith("pk.")) {
+        throw new Error("Invalid Mapbox public token.");
+      }
+
+      if (!navigator.geolocation) {
+        throw new Error("Geolocation is not supported.");
+      }
+
+      setStatus("Loading Mapbox...");
+
+      await loadMapbox();
+
+      mapboxgl.accessToken = token;
+
+      // Get GPS position before starting navigation.
+      setStatus("Getting your current position...");
+
+      const position = await new Promise((resolve, reject) => {
+
+        navigator.geolocation.getCurrentPosition(
+          resolve,
+          reject,
+          {
+            enableHighAccuracy: true,
+            timeout: 20000,
+            maximumAge: 0
+          }
+        );
+
+      });
+
+      currentLocation = [
+        position.coords.longitude,
+        position.coords.latitude
+      ];
+
+      // Find destination.
+      setStatus("Finding your destination...");
+
+      destinationCoordinates = await getDestination();
+
+      // Calculate route.
+      setStatus("Calculating your walking route...");
+
+      route = await getRoute(
+        currentLocation,
+        destinationCoordinates
+      );
+
+      steps = route.legs[0].steps;
+
+      buildRouteMetrics();
+
+      // Create map BEFORE navigation starts.
+      map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/mapbox/streets-v12",
+        center: currentLocation,
+        zoom: 16
+      });
+
+      map.addControl(
+        new mapboxgl.NavigationControl()
+      );
+
+      await new Promise((resolve, reject) => {
+
+        map.once("load", resolve);
+        map.once("error", reject);
+
+      });
+
+      displayRoute();
+
+      updateInstructions();
+
+      startButton.disabled = false;
+
+      setStatus("Route ready! Review your journey and start when you're ready.");
+
+    } catch (error) {
+
+      console.error("Route preparation error:", error);
+
+      if (error.code === 1) {
+
+        setStatus("Location permission denied. Allow GPS access in Chrome.");
+
+      } else if (error.code === 2) {
+
+        setStatus("GPS position unavailable.");
+
+      } else if (error.code === 3) {
+
+        setStatus("GPS request timed out. Try again.");
+
+      } else {
+
+        setStatus("Error: " + error.message);
+      }
+    }
+  }
+
+  // -----------------------------------------
+  // START NAVIGATION
+  // -----------------------------------------
+
+  function startNavigation() {
+
+    if (!route || !map) return;
+
+    navigationStarted = true;
+    navigationStopped = false;
+
+    startButton.disabled = true;
+    stopButton.disabled = false;
+
+    setStatus("Navigation started. Follow the instructions.");
+
+    // Start continuous GPS tracking.
+    watchId = navigator.geolocation.watchPosition(
+
+      handlePosition,
+
+      error => {
+        setStatus("GPS error: " + error.message);
+      },
+
+      {
+        enableHighAccuracy: true,
+        maximumAge: 1000,
+        timeout: 20000
+      }
+    );
+  }
+
+  // -----------------------------------------
+  // STOP NAVIGATION
+  // -----------------------------------------
+
+  function stopNavigation() {
+
+    navigationStopped = true;
+    navigationStarted = false;
+
+    if (watchId !== null) {
+
+      navigator.geolocation.clearWatch(watchId);
+
+      watchId = null;
+    }
+
+    if (map) {
+      map.stop();
+
+      // Return to overview.
+      const bounds = new mapboxgl.LngLatBounds();
+
+      bounds.extend(currentLocation);
+      bounds.extend(destinationCoordinates);
+
+      map.easeTo({
+        center: bounds.getCenter(),
+        zoom: 14,
+        pitch: 0,
+        duration: 800
+      });
+    }
+
+    instructionElement.textContent = "Navigation stopped";
+
+    instructionDistanceElement.textContent = "Your route is still available.";
+
+    setStatus("Navigation stopped. Your route is still displayed.");
+
+    stopButton.disabled = true;
+    startButton.disabled = false;
+  }
+
+  startButton.addEventListener("click", startNavigation);
+
+  stopButton.addEventListener("click", stopNavigation);
+
+  // IMPORTANT:
+  // Prepare the route immediately when the page opens.
+  // The user does not need to press Start navigation.
+
+  prepareRoute();
+
+}
+</script>
