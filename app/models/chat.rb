@@ -76,6 +76,6 @@ class Chat < ApplicationRecord
 
   # "Paris" until the team adds the address column "3 Rue de la Paix, Paris" until the team adds the address column
   def location
-    try(:address).presence || "3 Rue de la Paix, Paris"
+    input_address
   end
 end
