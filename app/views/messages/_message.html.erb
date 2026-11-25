@@ -1,9 +1,9 @@
 <% if message.role == "user" %>
-  <div class="message-container">
-    <%= image_tag "Emma.jpeg", alt: "Description de l'image", class:"avatar" %>
+  <div class="message-container container-user">
     <div class="message message-user">
       <%= raw(render_markdown(message.content)) %>
     </div>
+    <%= image_tag "Emma.jpeg", alt: "Description de l'image", class:"avatar" %>
   </div>
 <% elsif message.role == "assistant" %>
   <div class="message-container">
