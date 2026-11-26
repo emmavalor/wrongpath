@@ -1,8 +1,8 @@
 class MessagesController < ApplicationController
   before_action :authenticate_user!, :find_chat
 
-  def new
-    
+  def show
+    @temp_gem = Message.find(params[:id])
   end
   def create
     @chat = current_user.chats.find(params[:chat_id])
