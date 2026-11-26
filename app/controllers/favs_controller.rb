@@ -6,6 +6,7 @@ class FavsController < ApplicationController
   end
 
   def create
+    @message = Message.find(params[:id])
   end
 
   def show
@@ -36,10 +37,6 @@ class FavsController < ApplicationController
   end
 
   private
-
-  def find_chat
-    @chat = current_user.chats.find(params[:chat_id])
-  end
 
   def message_params
     params.require(:message).permit(:content)

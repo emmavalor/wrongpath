@@ -31,11 +31,12 @@ class ChatsController < ApplicationController
 
   def first_message
     message_content = "Welcome to WrongPath 👋🚶‍♂️, I see you are at #{@chat.input_address}!
-                      I found a few fun facts SUPER relevant to you.
-                      Which category do you want to explore?"
+    I found a few fun facts SUPER relevant to you.
+    Which category do you want to explore?"
     @chat.messages.create!(
       content: message_content,
-      role: "assistant"
+      role: "assistant",
+      to_display: true
     )
     # Message.create!(content: message_content, role: "assistant", chat: @chat)
   end
