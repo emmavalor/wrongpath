@@ -1,21 +1,42 @@
-.mx-auto {
-  max-width: 650px;
+
+/* ========================================
+   GEM CARD
+======================================== */
+
+.gem-card {
   width: 100%;
-  border-radius: 28px;
+  height: auto;
+  max-width: 650px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 24px;
   overflow: hidden;
+
   background: rgba(255,255,255,0.22);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
+
   border: 1px solid rgba(255,255,255,0.55);
+
   box-shadow:
-  0 24px 70px rgba(5,20,45,0.22),
-  inset 0 1px 1px rgba(255,255,255,0.5);
+    0 24px 70px rgba(5,20,45,0.22),
+    inset 0 1px 1px rgba(255,255,255,0.5);
 }
 
+/* ========================================
+   IMAGE
+======================================== */
+
 .img-container {
-  height: 270px;
+  height: clamp(140px, 21vh, 245px);
+  flex: 0 0 auto;
+
   position: relative;
   overflow: hidden;
+
   background: linear-gradient(135deg, #173B5B, #F28C45);
 
   img {
@@ -28,33 +49,44 @@
   .img-overlay {
     position: absolute;
     inset: 0;
+
     background: linear-gradient(
       180deg,
       rgba(8,25,45,0.12) 0%,
       rgba(8,25,45,0.02) 40%,
       rgba(8,25,45,0.38) 100%
     );
+
     pointer-events: none;
   }
 }
 
+/* ========================================
+   CATEGORY BADGE
+======================================== */
+
 .category-badge {
   position: absolute;
-  top: 22px;
-  left: 22px;
+  top: 18px;
+  left: 18px;
+
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 9px 15px;
+
+  padding: 8px 14px;
   border-radius: 30px;
+
   color: white;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
+
   background: rgba(255,255,255,0.18);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+
   border: 1px solid rgba(255,255,255,0.35);
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 
@@ -62,20 +94,32 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
+
     background: #FFAA68;
     box-shadow: 0 0 10px #FFAA68;
   }
 }
 
+/* ========================================
+   CONTENT
+======================================== */
+
 .content {
-  padding: 34px 38px 38px;
+  flex: 0 0 auto;
+  min-height: auto;
+
+  padding: 24px 32px 26px;
+
   background: linear-gradient(
     135deg,
     rgba(255,255,255,0.78),
     rgba(235,242,250,0.70)
   );
+
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
+
+  overflow: visible;
 
   .content-location {
     display: flex;
@@ -84,7 +128,7 @@
     color: #456985;
     font-size: 14px;
     font-weight: 500;
-    margin-bottom: 22px;
+    margin-bottom: 16px;
   }
 
   .fa-location-dot {
@@ -94,32 +138,253 @@
 
   h2 {
     color: #173B5B;
-    font-size: 34px;
+    font-size: clamp(23px, 3vw, 32px);
     font-weight: 800;
-    letter-spacing: -1.3px;
-    line-height: 1.18;
-    margin: 0 0 24px 0;
+    letter-spacing: -1px;
+    line-height: 1.15;
+    margin: 0 0 17px;
   }
 
   p {
     color: #365A78;
     font-size: 16px;
+    font-family: 'Maven Pro', sans-serif;
     font-weight: 400;
-    line-height: 1.9;
+    line-height: 1.65;
     letter-spacing: 0.05px;
     margin: 0;
   }
 }
 
+/* ========================================
+   ORANGE SEPARATOR
+======================================== */
+
 .separator {
-  width: 54px;
-  height: 5px;
+  width: 48px;
+  height: 4px;
+
   border-radius: 10px;
+
   background: linear-gradient(
     90deg,
     #F28C45,
     #FFB77F
   );
-  margin-bottom: 25px;
+
+  margin-bottom: 18px;
+
   box-shadow: 0 2px 10px rgba(242,140,69,0.2);
+}
+
+/* ========================================
+   GEM PAGE LAYOUT
+======================================== */
+
+.gem-page {
+  width: 100%;
+  min-height: calc(100dvh - 110px);
+  height: auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px 24px 24px;
+  margin: 0 auto;
+  gap: 24px;
+
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.gem-card-wrapper {
+  width: 100%;
+  max-width: 650px;
+
+  flex: 0 0 auto;
+  min-height: auto;
+}
+
+/* ========================================
+   TINDER ACTIONS
+======================================== */
+
+.gem-actions {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  gap: 34px;
+  flex: 0 0 auto;
+
+  padding: 4px 0;
+
+  // Reset Rails forms
+  form {
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+
+  .gem-action {
+    appearance: none;
+    -webkit-appearance: none;
+
+    width: 62px;
+    height: 62px;
+    min-width: 62px;
+
+    padding: 0;
+    border-radius: 50%;
+
+    border: 1px solid rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.92);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 25px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow: 0 6px 22px rgba(0,0,0,0.2);
+
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-4px) scale(1.08);
+    }
+
+    &:active {
+      transform: scale(0.92);
+    }
+  }
+
+  .gem-action--reject {
+    color: #E65D61;
+
+    &:hover {
+      background: #E65D61;
+      color: white;
+    }
+  }
+
+  .gem-action--like {
+    color: #F28C45;
+
+    &:hover {
+      background: #F28C45;
+      color: white;
+    }
+  }
+
+  .gem-action--goto {
+    color: #3984B8;
+
+    &:hover {
+      background: #3984B8;
+      color: white;
+    }
+  }
+}
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 576px) {
+
+  .gem-page {
+    min-height: calc(100dvh - 90px);
+    height: auto;
+
+    padding: 12px 18px 24px;
+    gap: 22px;
+  }
+
+  .gem-card {
+    border-radius: 20px;
+  }
+
+  .img-container {
+    height: clamp(125px, 19vh, 180px);
+  }
+
+  .category-badge {
+    top: 14px;
+    left: 14px;
+    padding: 7px 12px;
+  }
+
+  .content {
+    padding: 20px 22px 22px;
+
+    .content-location {
+      font-size: 13px;
+      margin-bottom: 13px;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 15px;
+      line-height: 1.65;
+    }
+  }
+
+  .separator {
+    margin-bottom: 15px;
+  }
+
+  .gem-actions {
+    gap: 30px;
+
+    .gem-action {
+      width: 58px;
+      height: 58px;
+      min-width: 58px;
+      font-size: 23px;
+    }
+  }
+}
+
+/* ========================================
+   SMALL SCREENS
+======================================== */
+
+@media (max-height: 700px) {
+
+  .img-container {
+    height: 125px;
+  }
+
+  .gem-page {
+    gap: 18px;
+  }
+
+  .content {
+    padding-top: 14px;
+    padding-bottom: 16px;
+  }
+
+  .gem-actions {
+    .gem-action {
+      width: 52px;
+      height: 52px;
+      min-width: 52px;
+      font-size: 21px;
+    }
+  }
 }
