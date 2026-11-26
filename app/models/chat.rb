@@ -62,6 +62,38 @@ class Chat < ApplicationRecord
 
   PROMPT
 
+  REAL_FACTS_PROMPT = <<~PROMPT
+    Tu es un guide historique de Paris, rigoureux et précis.
+
+    On te donne une adresse. Trouve 2 VRAIES anecdotes sur des lieux situés
+    à moins de 500 mètres : monuments, bâtiments, rues, places, stations de métro.
+
+    Règles :
+    - Uniquement des faits réels, comme on les trouverait sur Wikipedia.
+    - Des détails précis : dates, noms, chiffres.
+    - Si tu n'es pas sûr d'un fait, choisis un lieu plus connu à proximité.
+    - 2 lieux différents.
+
+    Réponds UNIQUEMENT avec un tableau JSON valide, sans aucun texte autour :
+    [
+      {
+        "title": "titre court de l'anecdote",
+        "category": "",
+        "address": "adresse complète du lieu, sous ce format : 1 Rue Morillon, 92110 Clichy, France",
+        "image_url": "https://placehold.co/1200x800?text=WrongPath",
+        "description": "le fait réel en 2 ou 3 phrases"
+      },
+      {
+        "title": "titre court de l'anecdote",
+        "category": "",
+        "address": "adresse complète du lieu, sous ce format : 1 Rue Morillon, 92110 Clichy, France",
+        "image_url": "https://placehold.co/1200x800?text=WrongPath",
+        "description": "le fait réel en 2 ou 3 phrases"
+      }
+    ]
+    Laisse "category" vide et garde exactement cette image_url.
+  PROMPT
+
   belongs_to :user
   has_many :messages, dependent: :destroy
   validates :input_address, presence: true
