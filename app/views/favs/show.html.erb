@@ -1,40 +1,44 @@
+<div class="gem-page">
 
-<div class="container mt-4">
+  <div class="gem-card-wrapper">
+    <%= render "shared/gem_card", gem: @temp_gem %>
+  </div>
 
-  <%= render "shared/gem_card", gem: @temp_gem %>
+  <div class="gem-actions">
 
-  <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+    <%# PASS %>
+    <%= button_to chat_messages_path(@message.chat),
+          params: { message: { content: @category } },
+          method: :post,
+          class: "gem-action gem-action--reject",
+          title: "Pass",
+          onclick: "new Audio('/sounds/heroku.mp3').play();" do %>
+      <i class="fa-solid fa-xmark"></i>
+    <% end %>
 
+    <%# LIKE %>
+    <%= button_to favs_path,
+          method: :post,
+          class: "gem-action gem-action--like",
+          title: "Like",
+          onclick: "new Audio('/sounds/heroku.mp3').play();" do %>
+      <i class="fa-solid fa-heart"></i>
+    <% end %>
+
+    <%# GO TO %>
     <button
-      class="btn-wrongpath px-4"
+      class="gem-action gem-action--goto"
       type="button"
-      onclick="
-        new Audio('/sounds/heroku.mp3').play();
-      ">
-      <i class="fa-regular fa-bookmark me-2"></i>
-      Save
-    </button>
-
-    <button
-      class="btn-wrongpath px-4"
-      type="button"
+      title="Go to"
       onclick="
         new Audio('/sounds/fah.mp3').play();
         setTimeout(() => {
           window.location.href = '<%= navigate_fav_path(@message) %>';
         }, 600);
       ">
-      <i class="fa-solid fa-location-arrow me-2"></i>
-      Go to
+      <i class="fa-solid fa-location-arrow"></i>
     </button>
 
-    <%= button_to chat_messages_path(@message.chat),
-          params: { message: { content: @category } },
-          method: :post,
-          class: "btn-wrongpath px-4" do %>
-      <i class="fa-solid fa-rotate me-2"></i>
-      Another one
-    <% end %>
   </div>
 
 </div>
