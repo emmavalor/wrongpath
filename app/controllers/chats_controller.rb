@@ -4,10 +4,11 @@ class ChatsController < ApplicationController
 
   def create
     @chat = Chat.new(user: current_user)
-    @chat.input_address = "12 rue de la paix, 75002 Paris"  #A REMPLACER PAR full_address
+    @chat.input_address = full_address
 
     if @chat.save
       first_message
+      create_real_facts
       redirect_to chat_path(@chat)
     else
       redirect_to root_path, alert: "Please enter an address to unveil its secrets."
