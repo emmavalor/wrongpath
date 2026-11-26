@@ -13,48 +13,118 @@
       <%= form.label :address, "City", class: "visually-hidden" %>
       <%= form.text_field :address, id: "input-hidden", class: "input mb12 bg-white visually-hidden", autocomplete: "address-line1", placeholder: "Address" %>
 
-      <%= form.submit "Unveil secrets !", class: "btn-wrongpath mt-2 w-100" %>
+      <%= form.submit "Révèle-moi un secret !", class: "btn-wrongpath mt-2 w-100" %>
     <% end %>
   </div>
 
 </div>
 
-
 <script>
-
   const ACCESS_TOKEN = '<%= ENV['MAPBOX_KEY'] %>';
 
-    const map = new mapboxgl.Map({
-        accessToken: ACCESS_TOKEN,
-        container: 'map',
-        center: [12.99209, 40.68933],
-        zoom: 1
+  const map = new mapboxgl.Map({
+    accessToken: ACCESS_TOKEN,
+    container: 'map',
+    center: [12.99209, 40.68933],
+    zoom: 1
+  });
+
+  window.addEventListener('load', () => {
+    const searchBox = new MapboxSearchBox();
+
+    searchBox.accessToken = ACCESS_TOKEN;
+
+    searchBox.options = {
+      types: 'address,poi',
+      proximity: [2.00000, 49.00000],
+      language: 'fr'
+    };
+
+    // Placeholder en français
+    searchBox.placeholder = "Renseignez une adresse...";
+
+    // Style de la barre
+    searchBox.theme = {
+      variables: {
+        colorBackground: '#0B1B30',
+        colorBackgroundHover: '#19334D',
+        colorBackgroundActive: '#19334D',
+        colorText: '#FFFFFF',
+        colorPrimary: '#FF7138',
+        colorSecondary: '#B8C5D6',
+        border: '1px solid rgba(255,255,255,0.18)',
+        borderRadius: '12px',
+        boxShadow: '0 4px 15px rgba(0,0,0,0.25)',
+        fontFamily: 'Maven Pro, sans-serif',
+        unit: '16px'
+      },
+
+      cssText: `
+        [class$="--Input"] {
+          width: 100% !important;
+          max-width: none !important;
+          box-sizing: border-box;
+          color: #FFFFFF !important;
+          -webkit-text-fill-color: #FFFFFF !important;
+          caret-color: #FF7138;
+          font-family: 'Maven Pro', sans-serif;
+        }
+
+        [class$="--Input"]::placeholder {
+          color: rgba(255, 255, 255, 0.65) !important;
+          -webkit-text-fill-color: rgba(255, 255, 255, 0.65) !important;
+          opacity: 1;
+        }
+
+        .Input::placeholder {
+          color: rgba(255,255,255,0.65) !important;
+          -webkit-text-fill-color: rgba(255,255,255,0.65);
+          opacity: 1;
+        }
+
+        .SearchBox:hover {
+          border-color: #FF7138 !important;
+        }
+
+        .SearchBox:focus-within {
+          border-color: #FF7138 !important;
+          box-shadow: 0 0 0 2px rgba(255,113,56,0.2) !important;
+        }
+
+        .SearchIcon {
+          color: #FF7138;
+        }
+
+        .Results {
+          border-radius: 12px;
+        }
+      `
+    };
+
+    searchBox.marker = true;
+    searchBox.mapboxgl = mapboxgl;
+
+    searchBox.componentOptions = {
+      allowReverse: true,
+      flipCoordinates: true
+    };
+
+    map.addControl(searchBox);
+
+    console.log('map lancée');
+    console.log(searchBox);
+
+    searchBox.addEventListener('retrieve', (e) => {
+      const feature = e.detail.features[0];
+
+      if (!feature) return;
+
+      const adresseComplete = feature.properties.full_address;
+      const inputHidden = document.getElementById('input-hidden');
+
+      inputHidden.value = adresseComplete;
+
+      console.log(inputHidden);
     });
-
-    window.addEventListener('load', () => {
-        const searchBox = new MapboxSearchBox();
-        searchBox.accessToken = ACCESS_TOKEN;
-        searchBox.options = {
-            types: 'address,poi',
-            proximity: [2.00000, 49.00000]
-        };
-
-        searchBox.marker = true;
-        searchBox.mapboxgl = mapboxgl;
-        searchBox.componentOptions = { allowReverse: true, flipCoordinates: true };
-        map.addControl(searchBox);
-        console.log('map lancée')
-        console.log(searchBox)
-
-        searchBox.addEventListener('retrieve', (e) => {
-            const feature = e.detail.features[0];
-            if (!feature) return;
-            const adresseComplete = feature.properties.full_address;
-            inputHidden = document.getElementById('input-hidden');
-            inputHidden.value = adresseComplete;
-            console.log(inputHidden);
-        });
-    });
-
-
+  });
 </script>
