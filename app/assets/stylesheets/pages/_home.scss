@@ -42,17 +42,14 @@
   }
 }
 
-/* Mapbox attribution */
+/* Hide Mapbox branding and attribution */
 #map {
-  .mapboxgl-ctrl-attrib {
-    background: rgba(6, 24, 43, 0.85);
-    color: rgba(255, 255, 255, 0.7);
-    border-radius: 6px 0 0 0;
-    font-size: 10px;
+  .mapboxgl-ctrl-logo {
+    display: none !important;
+  }
 
-    a {
-      color: rgba(255, 255, 255, 0.85);
-    }
+  .mapboxgl-ctrl-attrib {
+    display: none !important;
   }
 }
 
