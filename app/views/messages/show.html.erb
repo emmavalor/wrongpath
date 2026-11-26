@@ -16,7 +16,7 @@
     <% end %>
 
     <%# LIKE %>
-    <%= button_to favs_path,
+    <%= button_to favs_path(message_id: @message.id),
           method: :post,
           class: "gem-action gem-action--like",
           title: "Like",
