@@ -1,159 +1,35 @@
 
-<div class="mx-auto"
-     style="
-       max-width: 650px;
-       width: 100%;
-       border-radius: 28px;
-       overflow: hidden;
-       background: rgba(255,255,255,0.22);
-       backdrop-filter: blur(30px);
-       -webkit-backdrop-filter: blur(30px);
-       border: 1px solid rgba(255,255,255,0.55);
-       box-shadow:
-         0 24px 70px rgba(5,20,45,0.22),
-         inset 0 1px 1px rgba(255,255,255,0.5);
-     ">
-
+<div class="mx-auto">
   <!-- IMAGE -->
-  <div style="
-    height: 270px;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #173B5B, #F28C45);
-  ">
-
-    <img
-       src="https://media.gettyimages.com/id/2228622605/photo/charming-parisian-street-with-historic-architecture-and-view-of-institut-de-france-paris.jpg?s=612x612&w=0&k=20&c=6OTBWuiUUKt6kdyWlbpjJ5ax7SDOPhV1SsoSHBVftGg="
-      alt=""
-      onerror="this.style.display='none'"
-      style="
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-      "
-    >
+  <div class="img-container">
+    <img src="https://media.gettyimages.com/id/2228622605/photo/charming-parisian-street-with-historic-architecture-and-view-of-institut-de-france-paris.jpg?s=612x612&w=0&k=20&c=6OTBWuiUUKt6kdyWlbpjJ5ax7SDOPhV1SsoSHBVftGg="
+          alt="Image complétement VRAIE de <%= gem[:title] %>"
+          onerror="this.style.display='none'">
 
     <!-- Image overlay -->
-    <div style="
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgba(8,25,45,0.12) 0%,
-        rgba(8,25,45,0.02) 40%,
-        rgba(8,25,45,0.38) 100%
-      );
-      pointer-events: none;
-    "></div>
+    <div class="img-overlay"></div>
 
     <!-- Category badge -->
-    <div style="
-      position: absolute;
-      top: 22px;
-      left: 22px;
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 9px 15px;
-      border-radius: 30px;
-      color: white;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      background: rgba(255,255,255,0.18);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.35);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    ">
-      <span style="
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: #FFAA68;
-        box-shadow: 0 0 10px #FFAA68;
-      "></span>
-
+    <div class="category-badge">
+      <span></span>
       <%= gem[:category] %>
     </div>
-
   </div>
 
 
   <!-- CONTENT -->
-  <div style="
-    padding: 34px 38px 38px;
-    background: linear-gradient(
-      135deg,
-      rgba(255,255,255,0.78),
-      rgba(235,242,250,0.70)
-    );
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-  ">
-
+  <div class="content">
     <!-- LOCATION -->
-    <div style="
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: #456985;
-      font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 22px;
-    ">
-      <i class="fa-solid fa-location-dot"
-         style="
-           color: #F28C45;
-           font-size: 16px;
-         "></i>
-
+    <div class="content-location">
+      <i class="fa-solid fa-location-dot"></i>
       <%= gem[:address] %>
     </div>
-
-
     <!-- TITLE -->
-    <h2 style="
-      color: #173B5B;
-      font-size: 34px;
-      font-weight: 800;
-      letter-spacing: -1.3px;
-      line-height: 1.18;
-      margin: 0 0 24px 0;
-    ">
-      <%= gem[:title] %>
-    </h2>
-
-
+    <h2><%= gem[:title] %></h2>
     <!-- ORANGE ACCENT -->
-    <div style="
-      width: 54px;
-      height: 5px;
-      border-radius: 10px;
-      background: linear-gradient(
-        90deg,
-        #F28C45,
-        #FFB77F
-      );
-      margin-bottom: 25px;
-      box-shadow: 0 2px 10px rgba(242,140,69,0.2);
-    "></div>
-
-
+    <div class="separator"></div>
     <!-- DESCRIPTION -->
-    <p style="
-      color: #365A78;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 1.9;
-      letter-spacing: 0.05px;
-      margin: 0;
-    ">
-      <%= gem[:description] %>
-    </p>
-
+    <p><%= gem[:description] %></p>
   </div>
 
 </div>
