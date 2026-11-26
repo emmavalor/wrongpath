@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!, :find_chat
 
   def show
-    @temp_gem = Message.find(params[:id])
+    @temp_gem = Message::TEMP_GEMS[0]
   end
   def create
     @chat = current_user.chats.find(params[:chat_id])
@@ -15,10 +15,10 @@ class MessagesController < ApplicationController
       build_conversation_history
       response = @ruby_llm_chat.with_instructions(instructions).ask(@message.content)
 
-      @assistant_message = Message.create(role: "assistant", content: response.content, chat: @chat)
+      @assistant_message = Message.create(role: "assistant", content: response.content, to_display: false, chat: @chat)
 
       if Chat::CATEGORIES.include?(@message.content)
-        redirect_to fav_path(@assistant_message)
+        redirect_to chat_message_path(@message)
       else
         respond_to do |format|
           format.turbo_stream # renders app/views/messages/create.turbo_stream.erb (like lecture)
