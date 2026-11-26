@@ -17,7 +17,6 @@ class FavsController < ApplicationController
                         .where("messages.id < ?", @message.id)
                         .order(id: :desc)
                         .pick(:content)
-    raise
   end
 
   def create
