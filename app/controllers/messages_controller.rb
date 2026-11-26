@@ -2,6 +2,7 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!
 
   def create
+    raise
     @chat = current_user.chats.find(params[:chat_id])
     @message = Message.new(message_params)
     @message.chat = @chat

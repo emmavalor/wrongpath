@@ -55,6 +55,11 @@ $chat-gray: #F4F4F4;
   gap: 5px;
 }
 
+.new_message_container {
+
+  padding: 12px 0;
+}
+
 .message {
   max-width: 80%;
   padding: 8px 12px;
@@ -63,7 +68,6 @@ $chat-gray: #F4F4F4;
   line-height: 2.5;
   p:last-child { margin-bottom: 0; }
 }
-
 
 .message-assistant {
   align-self: flex-start;
@@ -94,6 +98,7 @@ $chat-gray: #F4F4F4;
   .form-control { border-radius: 24px; padding: 10px 16px; }
   .btn-send {
     background: $blue_navy;
+    box-shadow: 1px 1px 0px $scary_red;
     color: white;
     border: none;
     border-radius: 24px;
