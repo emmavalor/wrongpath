@@ -7,12 +7,11 @@
   <div class="gem-actions">
 
     <%# PASS %>
-    <%= button_to chat_messages_path(@message.chat),
-          params: { message: { content: @category } },
-          method: :post,
-          class: "gem-action gem-action--reject",
-          title: "Pass",
-          onclick: "new Audio('/sounds/heroku.mp3').play();" do %>
+    <%= button_to chat_message_path(@chat, @message),
+        method: :delete,
+        class: "gem-action gem-action--reject",
+        title: "Pass",
+        onclick: "new Audio('/sounds/heroku.mp3').play();" do %>
       <i class="fa-solid fa-xmark"></i>
     <% end %>
 

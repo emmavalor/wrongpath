@@ -41,7 +41,7 @@ $chat-gray: #F4F4F4;
 
 .chat-messages {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 12px;
 }
 

@@ -6,6 +6,7 @@ class FavsController < ApplicationController
   end
 
   def create
+    @message = Message.find(params[:id])
   end
 
   def show
