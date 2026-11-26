@@ -2,7 +2,7 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!, :find_chat
 
   def show
-    @temp_favs = @chat.messages.where(to_display: false)
+    @temp_favs = @chat.messages.where(to_display: false).where.not("content ->> 'category' IS NULL OR content ->> 'category' = ''")
     @message = @temp_favs[0]
   end
   def create
