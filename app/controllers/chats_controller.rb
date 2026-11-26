@@ -34,7 +34,8 @@ class ChatsController < ApplicationController
     Which category do you want to explore?"
     @chat.messages.create!(
       content: message_content,
-      role: "assistant"
+      role: "assistant",
+      to_display: true
     )
     # Message.create!(content: message_content, role: "assistant", chat: @chat)
   end

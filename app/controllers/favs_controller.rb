@@ -1,6 +1,4 @@
 class FavsController < ApplicationController
-  before_action :find_chat
-
   def index
   end
 
@@ -39,10 +37,6 @@ class FavsController < ApplicationController
   end
 
   private
-
-  def find_chat
-    @chat = current_user.chats.find(params[:chat_id])
-  end
 
   def message_params
     params.require(:message).permit(:content)
