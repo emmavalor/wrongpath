@@ -7,6 +7,7 @@ class ChatsController < ApplicationController
     @chat.input_address = "12 rue de la paix, 75002 Paris"  #A REMPLACER PAR full_address
 
     if @chat.save
+      first_message
       redirect_to chat_path(@chat)
     else
       redirect_to root_path, alert: "Please enter an address to unveil its secrets."
@@ -15,7 +16,6 @@ class ChatsController < ApplicationController
 
   def show
     @chat = current_user.chats.find(params[:id])
-    first_message unless @chat.messages.exists?
     @message = Message.new
   end
 
@@ -40,4 +40,10 @@ class ChatsController < ApplicationController
     # Message.create!(content: message_content, role: "assistant", chat: @chat)
   end
 
+  def create_real_facts
+    question = "Adresse : #{@chat.input_address}"
+    response = RubyLLM.chat.with_instructions(Chat::REAL_FACTS_PROMPT).ask(question)
+
+    @chat.messages.create!(content: response.content, role: "assistant", to_display: false)
+  end
 end

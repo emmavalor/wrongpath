@@ -1,6 +1,9 @@
 class MessagesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :find_chat
 
+  def show
+    @temp_gem = Message.find(params[:id])
+  end
   def create
     @chat = current_user.chats.find(params[:chat_id])
     @message = Message.new(message_params)
@@ -49,5 +52,9 @@ class MessagesController < ApplicationController
 
   def instructions
     [Chat::SYSTEM_PROMPT, location_context, stage_context].compact.join("\n\n")
+  end
+
+  def find_chat
+    @chat = current_user.chats.find(params[:chat_id])
   end
 end

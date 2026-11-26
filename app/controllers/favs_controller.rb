@@ -1,11 +1,11 @@
 class FavsController < ApplicationController
+  before_action :find_chat
+
   def index
   end
 
-  def create
-  end
-
-  def show
+  def new
+    @temp_favs = message_params
     @message = Message.joins(:chat)
                       .where(chats: { user_id: current_user.id }, role: "assistant")
                       .find(params[:id])
@@ -19,6 +19,12 @@ class FavsController < ApplicationController
                         .pick(:content)
   end
 
+  def create
+  end
+
+  def show
+  end
+
   def navigate
     @message = Message.joins(:chat)
                       .where(chats: { user_id: current_user.id }, role: "assistant")
@@ -30,5 +36,15 @@ class FavsController < ApplicationController
     @destination_title = @temp_gem[:title]
   end
   def destroy
+  end
+
+  private
+
+  def find_chat
+    @chat = current_user.chats.find(params[:chat_id])
+  end
+
+  def message_params
+    params.require(:message).permit(:content)
   end
 end

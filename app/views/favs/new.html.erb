@@ -1,0 +1,40 @@
+
+<div class="container mt-4">
+
+  <%= render "shared/gem_card", gem: @temp_gem %>
+
+  <div class="d-flex justify-content-center gap-3 mt-4 flex-wrap">
+
+    <button
+      class="btn-wrongpath px-4"
+      type="button"
+      onclick="
+        new Audio('/sounds/heroku.mp3').play();
+      ">
+      <i class="fa-regular fa-bookmark me-2"></i>
+      Save
+    </button>
+
+    <button
+      class="btn-wrongpath px-4"
+      type="button"
+      onclick="
+        new Audio('/sounds/fah.mp3').play();
+        setTimeout(() => {
+          window.location.href = '<%= navigate_fav_path(@message) %>';
+        }, 600);
+      ">
+      <i class="fa-solid fa-location-arrow me-2"></i>
+      Go to
+    </button>
+
+    <%= button_to chat_messages_path(@message.chat),
+          params: { message: { content: @category } },
+          method: :post,
+          class: "btn-wrongpath px-4" do %>
+      <i class="fa-solid fa-rotate me-2"></i>
+      Another one
+    <% end %>
+  </div>
+
+</div>

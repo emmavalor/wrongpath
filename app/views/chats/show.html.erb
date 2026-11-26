@@ -1,7 +1,7 @@
 <div class="chat-page">
   <div class="chat-box">
     <div class="chat-messages" id="messages">
-      <% @chat.messages.each do |message| %>
+      <% @chat.messages.where(to_display: [true, nil]).each do |message| %>
         <%= render "messages/message", message: message %>
       <% end %>
     </div>
