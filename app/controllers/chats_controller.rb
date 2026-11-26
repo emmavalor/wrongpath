@@ -30,7 +30,7 @@ class ChatsController < ApplicationController
 
   def first_message
     message_content = "Bienvenur sur WrongPath 👋🚶‍♂️
-                      Je vois que vous êtes à **#{@chat.input_address}**!
+                      Je vois que vous êtes à **#{'12 rue de la Paix, 75002 Paris'}**!
                       Il y a tellement de choses qu'on nous cache à cette adresse...
                       Quelle thématique vous intéresse en particulier ?"
     @chat.messages.create!(
@@ -40,3 +40,8 @@ class ChatsController < ApplicationController
     # Message.create!(content: message_content, role: "assistant", chat: @chat)
   end
 end
+
+
+
+
+# {@chat.input_address}
