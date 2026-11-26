@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   root "chats#index"
   resources :chats, only: [ :create, :show, :destroy ] do
     resources :messages, only: [ :create ]
-    resources :favs, only: [ :new ]
   end
 
   resources :favs, only: [ :index, :create, :show, :destroy ] do
