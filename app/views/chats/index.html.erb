@@ -11,7 +11,7 @@
   <div id="address-container">
     <%= form_with url: chats_path, class: "my-2", data: { turbo: false } do |form| %>
       <%= form.label :address, "City", class: "visually-hidden" %>
-      <%= form.text_field :address, id: "input-hidden", class: "input mb12 bg-white visually-hidden", autocomplete: "address-line1", placeholder: "Address" %>
+      <%= form.text_field :address, id: "input-hidden", class: "input mb12 bg-white", autocomplete: "address-line1", placeholder: "Put address here, save tokens" %>
 
       <%= form.submit "Révèle-moi un secret !", class: "btn-wrongpath mt-2 w-100" %>
     <% end %>
@@ -33,6 +33,7 @@
     const searchBox = new MapboxSearchBox();
 
     searchBox.accessToken = ACCESS_TOKEN;
+    console.log('default address : 12 rue de la paix 75002 Paris')
 
     searchBox.options = {
       types: 'address,poi',

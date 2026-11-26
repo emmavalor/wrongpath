@@ -4,7 +4,7 @@ class ChatsController < ApplicationController
 
   def create
     @chat = Chat.new(user: current_user)
-    @chat.input_address = full_address
+    @chat.input_address = "12 rue de la paix, 75002 Paris"  #A REMPLACER PAR full_address
 
     if @chat.save
       redirect_to chat_path(@chat)
@@ -30,7 +30,7 @@ class ChatsController < ApplicationController
 
   def first_message
     message_content = "Bienvenur sur WrongPath 👋🚶‍♂️
-                      Je vois que vous êtes à **#{'12 rue de la Paix, 75002 Paris'}**!
+                      Je vois que vous êtes à **#{@chat.input_address}**!
                       Il y a tellement de choses qu'on nous cache à cette adresse...
                       Quelle thématique vous intéresse en particulier ?"
     @chat.messages.create!(
@@ -39,9 +39,5 @@ class ChatsController < ApplicationController
     )
     # Message.create!(content: message_content, role: "assistant", chat: @chat)
   end
+
 end
-
-
-
-
-# {@chat.input_address}
