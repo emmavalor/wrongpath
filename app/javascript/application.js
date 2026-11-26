@@ -3,3 +3,52 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
 import "bootstrap"
+// import "swipe"
+
+const cardContainer = document.querySelector('.gem-card-wrapper');
+const rejectBtn = document.querySelector('.gem-action--reject');
+const likeBtn = document.querySelector('.gem-action--like');
+
+let startX;
+let diff = 0;
+
+const threshold = 120;
+
+document.addEventListener("pointerdown", (e) => {
+  startX = e.clientX;
+  cardContainer.classList.add("is-dragging");
+  console.log("DOWN");
+});
+
+document.addEventListener("pointermove", (e) => {
+  if (startX === undefined) return;
+
+  diff = e.clientX - startX;
+
+  if (diff < -threshold) {
+    cardContainer.style.transform = `translateX(${diff}px)
+                                     rotate(${diff * 0.05}deg)`;
+    cardContainer.style.transition = "all 0.2s ease";
+    rejectBtn.classList.add("reject-active");
+    likeBtn.classList.remove("like-active");
+  }
+  else if (diff > threshold) {
+    cardContainer.style.transform = `translateX(${diff}px)
+                                     rotate(${diff * 0.05}deg)`;
+    cardContainer.style.transition = "all 0.2s ease";
+    rejectBtn.classList.remove("reject-active");
+    likeBtn.classList.add("like-active");
+  }
+  else {
+    cardContainer.style.transform = "rotate(0deg)";
+    cardContainer.style.transition = "all 0.2s ease";
+    rejectBtn.classList.remove("reject-active");
+    likeBtn.classList.remove("like-active");
+  }
+});
+
+document.addEventListener("pointerup", () => {
+  startX = undefined;
+  cardContainer.classList.remove("is-dragging");
+  cardContainer.style.transform = "rotate(0deg)";
+});

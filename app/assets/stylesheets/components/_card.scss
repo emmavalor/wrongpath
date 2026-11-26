@@ -26,6 +26,15 @@
     inset 0 1px 1px rgba(255,255,255,0.5);
 }
 
+.gem-card-wrapper {
+  cursor: grab;
+}
+
+.gem-card-wrapper.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
 /* ========================================
    IMAGE
 ======================================== */
@@ -279,6 +288,12 @@
     }
   }
 
+  .reject-active {
+    background: #E65D61 !important;
+    color: white !important;
+    transform: translateY(-4px) scale(1.08);
+  }
+
   .gem-action--like {
     color: #F28C45;
 
@@ -286,6 +301,12 @@
       background: #F28C45;
       color: white;
     }
+  }
+
+  .like-active {
+    background: #F28C45 !important;
+    color: white !important;
+    transform: translateY(-4px) scale(1.08);
   }
 
   .gem-action--goto {
