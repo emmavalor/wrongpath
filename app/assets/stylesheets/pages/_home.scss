@@ -17,28 +17,25 @@
 }
 
 
-/* Full-width Mapbox Search Bar */
+/* Mapbox Search Box - Full width */
 #map {
   .mapboxgl-ctrl-top-right {
     left: 16px;
     right: 16px;
     width: auto;
-    margin: 16px 0;
-    box-sizing: border-box;
   }
 
   .mapboxgl-ctrl-top-right > .mapboxgl-ctrl {
-    float: none;
-    width: 100%;
-    max-width: none;
-    margin: 0;
+    width: 100% !important;
+    max-width: none !important;
+    float: none !important;
+    margin: 16px 0 0 !important;
   }
 
   mapbox-search-box {
     display: block;
-    width: 100%;
-    max-width: none;
-    box-sizing: border-box;
+    width: 100% !important;
+    max-width: none !important;
   }
 }
 
