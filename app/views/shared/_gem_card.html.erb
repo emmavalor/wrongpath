@@ -1,35 +1,147 @@
 
 <div class="gem-card mx-auto">
-    <!-- IMAGE -->
-  <div class="img-container">
-    <img src="https://media.gettyimages.com/id/2228622605/photo/charming-parisian-street-with-historic-architecture-and-view-of-institut-de-france-paris.jpg?s=612x612&w=0&k=20&c=6OTBWuiUUKt6kdyWlbpjJ5ax7SDOPhV1SsoSHBVftGg="
-          alt="Image complétement VRAIE de <%= gem[:title] %>"
-          onerror="this.style.display='none'">
 
-    <!-- Image overlay -->
+  <!-- IMAGE -->
+  <div class="img-container">
+    <img
+      src="https://media.gettyimages.com/id/2228622605/photo/charming-parisian-street-with-historic-architecture-and-view-of-institut-de-france-paris.jpg?s=612x612&w=0&k=20&c=6OTBWuiUUKt6kdyWlbpjJ5ax7SDOPhV1SsoSHBVftGg="
+      alt="Image illustrant <%= gem[:title] %>"
+      onerror="this.style.display='none'"
+    >
+
     <div class="img-overlay"></div>
 
-    <!-- Category badge -->
     <div class="category-badge">
       <span></span>
       <%= gem[:category] %>
     </div>
   </div>
 
-
-  <!-- CONTENT -->
+  <!-- WRONGPATH CARD CONTENT -->
   <div class="content">
-    <!-- LOCATION -->
+
     <div class="content-location">
       <i class="fa-solid fa-location-dot"></i>
       <%= gem[:address] %>
     </div>
-    <!-- TITLE -->
-    <h2><%= gem[:title] %></h2>
-    <!-- ORANGE ACCENT -->
-    <div class="separator"></div>
-    <!-- DESCRIPTION -->
-    <p><%= gem[:description] %></p>
-  </div>
 
+    <h2><%= gem[:title] %></h2>
+
+    <div class="separator"></div>
+
+    <p><%= gem[:description] %></p>
+
+    <!-- WIKIPEDIA EXPANSION -->
+    <details class="wiki-details">
+
+      <summary class="wiki-link">
+        <i class="fa-brands fa-wikipedia-w"></i>
+        Lire la source officielle
+        <i class="fa-solid fa-chevron-down wiki-chevron"></i>
+      </summary>
+
+      <div class="wiki-page">
+
+        <!-- WIKIPEDIA HEADER -->
+        <div class="wiki-topbar">
+          <div class="wiki-logo">
+            <%= image_tag "wikipedia.png", alt: "Wikipedia" %>
+
+            <div>
+              <div class="wiki-logo-title">Wikipédia</div>
+              <div class="wiki-logo-subtitle">L'encyclopédie libre</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ARTICLE NAVIGATION -->
+        <div class="wiki-tabs">
+          <div class="wiki-tabs-left">
+            <span class="wiki-tab active">Article</span>
+            <span class="wiki-tab">Discussion</span>
+          </div>
+
+          <div class="wiki-tabs-right">
+            <span class="wiki-tab active">Lire</span>
+            <span class="wiki-tab">Modifier</span>
+            <span class="wiki-tab">Historique</span>
+          </div>
+        </div>
+
+        <!-- ARTICLE -->
+        <div class="wiki-article">
+
+          <div class="wiki-heading">
+            <h1><%= gem[:title] %></h1>
+            <div class="wiki-heading-subtitle">
+              Page vérifiée de Wikipédia, source fiable.
+            </div>
+          </div>
+
+          <div class="wiki-language">
+            <i class="fa-solid fa-language"></i>
+            Langues
+          </div>
+
+          <!-- INFOBOX -->
+          <div class="wiki-infobox">
+
+            <div class="wiki-infobox-title">
+              <%= gem[:title] %>
+            </div>
+
+            <div class="wiki-infobox-image">
+              <img
+                src="https://media.gettyimages.com/id/2228622605/photo/charming-parisian-street-with-historic-architecture-and-view-of-institut-de-france-paris.jpg?s=612x612&w=0&k=20&c=6OTBWuiUUKt6kdyWlbpjJ5ax7SDOPhV1SsoSHBVftGg="
+                alt="<%= gem[:title] %>"
+                onerror="this.style.display='none'"
+              >
+              <div class="wiki-image-caption">
+                <%= gem[:address] %>
+              </div>
+            </div>
+
+            <table>
+              <tr>
+                <th>Catégorie</th>
+                <td><%= gem[:category] %></td>
+              </tr>
+              <tr>
+                <th>Lieu</th>
+                <td><%= gem[:address] %></td>
+              </tr>
+            </table>
+
+          </div>
+
+          <!-- TABLE OF CONTENTS -->
+          <div class="wiki-toc">
+            <div class="wiki-toc-title">
+              Sommaire
+              <span>[<a href="#wiki-article-content">masquer</a>]</span>
+            </div>
+
+            <ol>
+              <li>
+                <a href="#wiki-overview">Résumé</a>
+              </li>
+            </ol>
+          </div>
+
+          <!-- ARTICLE BODY -->
+          <div class="wiki-body" id="wiki-article-content">
+
+            <section id="wiki-overview">
+              <h2>Résumé</h2>
+              <p><%= gem[:description] %></p>
+            </section>
+
+          </div>
+
+        </div>
+      </div>
+    </details>
+
+  </div>
 </div>

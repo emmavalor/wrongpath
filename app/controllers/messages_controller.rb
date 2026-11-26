@@ -2,10 +2,8 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!, :find_chat
 
   def show
-    # @temp_gem = Message.find(params[:id])
-    @chat = Chat.find(params[:chat_id])
-    @messages = @chat.messages.where(to_display: false)
-
+    @temp_favs = @chat.messages.where(to_display: false).where("content::jsonb ->> 'category' != ''")
+    @message = @temp_favs[0]
   end
   def create
     @chat = current_user.chats.find(params[:chat_id])
@@ -18,10 +16,10 @@ class MessagesController < ApplicationController
       build_conversation_history
       response = @ruby_llm_chat.with_instructions(instructions).ask(@message.content)
 
-      @assistant_message = Message.create(role: "assistant", content: response.content, chat: @chat)
+      @assistant_message = Message.create(role: "assistant", content: response.content, to_display: false, chat: @chat)
 
       if Chat::CATEGORIES.include?(@message.content)
-        redirect_to fav_path(@assistant_message)
+        redirect_to chat_message_path(@chat, @message)
       else
         respond_to do |format|
           format.turbo_stream # renders app/views/messages/create.turbo_stream.erb (like lecture)
@@ -31,6 +29,15 @@ class MessagesController < ApplicationController
     else
       redirect_to chat_path(@chat), alert: @message.errors.full_messages.to_sentence
     end
+  end
+
+  def destroy
+    @temp_favs = @chat.messages.where(to_display: false).where("content::jsonb ->> 'category' != ''")
+    @temp_favs.to_a.delete(0)
+    # creer ici une nouvelle anecdote et l'inserer dans @temp_favs
+    @message = Message.find(params[:id])
+    @message.destroy
+    redirect_to chat_message_path(@temp_favs[0])
   end
 
   private

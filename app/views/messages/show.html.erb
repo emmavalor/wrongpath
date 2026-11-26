@@ -1,0 +1,43 @@
+<div class="gem-page">
+
+  <div class="gem-card-wrapper">
+    <%= render "shared/gem_card", gem: JSON.parse(@message.content, symbolize_names: true) %>
+  </div>
+
+  <div class="gem-actions">
+
+    <%# PASS %>
+    <%= button_to chat_message_path(@chat, @message),
+        method: :delete,
+        class: "gem-action gem-action--reject",
+        title: "Pass",
+        onclick: "new Audio('/sounds/heroku.mp3').play();" do %>
+      <i class="fa-solid fa-xmark"></i>
+    <% end %>
+
+    <%# LIKE %>
+    <%= button_to favs_path,
+          method: :post,
+          class: "gem-action gem-action--like",
+          title: "Like",
+          onclick: "new Audio('/sounds/heroku.mp3').play();" do %>
+      <i class="fa-solid fa-heart"></i>
+    <% end %>
+
+    <%# GO TO %>
+    <button
+      class="gem-action gem-action--goto"
+      type="button"
+      title="Go to"
+      onclick="
+        new Audio('/sounds/fah.mp3').play();
+        setTimeout(() => {
+          window.location.href = '<%= navigate_fav_path(@message) %>';
+        }, 600);
+      ">
+      <i class="fa-solid fa-location-arrow"></i>
+    </button>
+
+  </div>
+
+</div>
