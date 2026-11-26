@@ -3,7 +3,12 @@ class FavsController < ApplicationController
   end
 
   def new
-    @temp_favs = message_params
+  end
+
+  def create
+  end
+
+  def show
     @message = Message.joins(:chat)
                       .where(chats: { user_id: current_user.id }, role: "assistant")
                       .find(params[:id])
@@ -15,12 +20,6 @@ class FavsController < ApplicationController
                         .where("messages.id < ?", @message.id)
                         .order(id: :desc)
                         .pick(:content)
-  end
-
-  def create
-  end
-
-  def show
   end
 
   def navigate
