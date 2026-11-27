@@ -3,6 +3,68 @@
    GEM CARD
 ======================================== */
 
+.gem-page {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gem-card-wrapper {
+  width: 100%;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  will-change: transform;
+}
+
+.gem-card-wrapper:active {
+  cursor: grabbing;
+}
+
+.gem-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin-top: 25px;
+}
+
+.gem-action-form {
+  margin: 0;
+}
+
+.gem-action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 60px;
+  height: 60px;
+
+  border: none;
+  border-radius: 50%;
+
+  cursor: pointer;
+  font-size: 24px;
+
+  background: white;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+.gem-action--reject {
+  color: #e74c3c;
+}
+
+.gem-action--goto {
+  color: #3498db;
+}
+
+.gem-action--like {
+  color: #2ecc71;
+}
+
 .gem-card {
   width: 100%;
   height: auto;
@@ -27,6 +89,8 @@
 }
 
 .gem-card-wrapper {
+  touch-action: pan-y;
+  user-select: none;
   cursor: grab;
 }
 

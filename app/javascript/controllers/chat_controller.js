@@ -1,8 +1,6 @@
-console.log("chat_controller connected")
-
-const chatbox = document.querySelector("#messages")
-const button = document.querySelector("#btn-send-chat")
-const input_container = document.querySelector("#message_content")
+const chatbox = document.querySelector("#messages");
+const button = document.querySelector("#btn-send-chat");
+const input_container = document.querySelector("#message_content");
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

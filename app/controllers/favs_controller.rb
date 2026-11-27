@@ -3,36 +3,75 @@ class FavsController < ApplicationController
   def index
     @favs = current_user.favs.order(created_at: :desc)
   end
-  def create
-    @message = Message.find(params[:message_id])
-    @chat = @message.chat
 
-    message_content = JSON.parse(@message.content, symbolize_names: true)
 
-    @fav = Fav.new(title: message_content[:title], address: message_content[:address],
-                   description: message_content[:description], image_url: message_content[:image_url],
-                   category: message_content[:category], user: current_user)
-    if @fav.save
-      # Récupération des favoris temporaires
-      @temp_favs = @chat.messages
-                        .where(to_display: false)
-                        .where("content::jsonb ->> 'category' != ''")
-                        .order(:created_at)
-      @temp_favs = @temp_favs.to_a
-      # On retire le premier favori
-      removed_fav = @temp_favs.shift
+def create
+  @message = Message.find(params[:message_id])
+  @chat = @message.chat
 
-      if removed_fav
-        # On génère un nouveau message avec le LLM
-        new_fav = create_message_llm(removed_fav)
-        @temp_favs << new_fav
-        removed_fav.destroy!
+  message_content = JSON.parse(@message.content, symbolize_names: true)
+
+  @fav = Fav.new(
+    title: message_content[:title],
+    address: message_content[:address],
+    description: message_content[:description],
+    image_url: message_content[:image_url],
+    category: message_content[:category],
+    user: current_user
+  )
+
+  unless @fav.save
+    respond_to do |format|
+      format.html do
+        redirect_to chat_message_path(@chat, @message),
+                    alert: @fav.errors.full_messages.to_sentence
       end
-      redirect_to chat_message_path(@chat, @temp_favs.first || @message)
-    else
-      redirect_to chat_message_path(@chat, @message), alert: @fav.errors.full_messages.to_sentence
+
+      format.json do
+        render json: {
+          success: false,
+          errors: @fav.errors.full_messages
+        }, status: :unprocessable_entity
+      end
+    end
+
+    return
+  end
+
+  temp_favs = @chat.messages
+                   .where(to_display: false)
+                   .where("content::jsonb ->> 'category' != ''")
+                   .order(:created_at)
+
+  removed_fav = temp_favs.first
+
+  next_message = temp_favs.offset(1).first
+
+  if removed_fav
+    new_fav = create_message_llm(@chat.messages.first(2).last)
+    removed_fav.destroy!
+
+    next_message ||= new_fav
+  end
+
+  destination = chat_message_path(@chat, next_message || @message)
+
+  respond_to do |format|
+    format.html do
+      redirect_to destination
+    end
+
+    format.json do
+      render json: {
+        success: true,
+        message: "Favori ajouté avec succès",
+        redirect_url: destination
+      }, status: :created
     end
   end
+end
+
+
 
   def show
     @message = Message.joins(:chat)

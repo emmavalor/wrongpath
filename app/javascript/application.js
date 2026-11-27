@@ -4,6 +4,14 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
 import "bootstrap"
+
+
+
+ // Configure your import map in config/importmap.rb.
+import "@hotwired/turbo-rails"
+import "controllers"
+import "@popperjs/core"
+import "bootstrap"
 // import "swipe"
 
 const cardContainer = document.querySelector('.gem-card-wrapper');
