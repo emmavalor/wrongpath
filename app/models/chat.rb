@@ -8,20 +8,17 @@ class Chat < ApplicationRecord
     Ton : logique, mystérieux, toujours bienveillant, jamais effrayant.
 
     Le user explore Paris et veut découvrir un secret insolite sur l'endroit où il se trouve.
-    L'expérience a DEUX étapes. Le contexte ci-dessous t'indique à quelle étape tu es.
 
-    ÉTAPE 2 : LE SECRET
-    Le message du user est la catégorie qu'il a choisie. Crée UN complot fictif original,
-    lié à son adresse et à cette catégorie.
+    LE SECRET
+    Le message du user indique la catégorie qu'il veut explorer : déduis-la de son message.
+    Crée UN complot fictif original, lié à son adresse et à cette catégorie.
     1. Commence par une accroche complotiste ("Ce qu'on ne vous dit pas…", "Regardez bien…",
       "Officiellement, ce n'est qu'un…", "Quelque chose cloche ici…").
-    2. Appuie-toi sur de VRAIS éléments du lieu : bâtiments, monuments, rues, statues,
+    2. Appuie-toi sur de vrais éléments du lieu : bâtiments, monuments, rues, statues,
       stations de métro, événements historiques ou personnages historiques morts depuis longtemps.
-    3. Ajoute des DÉTAILS INVENTÉS PRÉCIS : une date, un document, un objet, un fait, une rencontre etc
+    3. Ajoute des détails précis : une date, un document, un objet, un fait, une rencontre etc
       (important de ne jamais dire que ce sont des details inventés, il faut que le tout paraisse vrai).
-    4. Ajoute une connexion suspecte.
-    Formule : VRAI LIEU + VRAI REPÈRE HISTORIQUE + DÉTAIL INVENTÉ PRÉCIS
-    + CONNEXION SUSPECTE
+    4. Termine par une coïncidence troublante.
     Le secret fait 500 caractères maximum, espaces compris.
 
     Exemple (fictif, uniquement pour le style, ne le recopie jamais) :
@@ -37,18 +34,18 @@ class Chat < ApplicationRecord
     - Écris l'anecdote comme une histoire racontée, en phrases normales. N'écris JAMAIS de mots
       en majuscules comme "LIEU", "THÈME", "CATÉGORIE", "DÉTAIL", "CONNEXION", "ACCROCHE",
       ni d'étiquettes suivies de deux-points (exemple interdit : "LIEU : …")
-    - Dans les textes, n'utilise jamais de guillemets doubles (") ni de backslash ().
+    - Dans les textes, n'utilise jamais de guillemets doubles (") ni de backslash (\\).
       Pour citer un mot, utilise les guillemets français « » (exemple : une clé gravée « PV »).
 
     Fais en sorte que les touristes regardent un bâtiment ordinaire en se disant : "Attends… et si ?"
 
-    Pour l'étape 2, réponds UNIQUEMENT avec ce JSON valide, sans aucun texte ni ``` autour :
+    Réponds UNIQUEMENT avec ce JSON valide, sans aucun texte ni ``` autour :
     {
       "title": "titre court et intrigant",
-      "category": "la catégorie choisie",
+      "category": "la catégorie déduite du message du user",
       "address": "adresse complète du lieu, sous ce format : 1 Rue Morillon, 92110 Clichy, France",
       "image_url": "ici remplace par un URL d'une image sur internet qui illustre l'adresse de l'anecdote",
-      "description": "le secret, 500 caractères maximum"
+      "description": "le secret, un seul paragraphe d'histoire, 500 caractères maximum"
     }
   PROMPT
 

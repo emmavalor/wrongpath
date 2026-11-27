@@ -7,14 +7,6 @@
     </div>
   </div>
 
-  <div class="category-buttons">
-    <% Chat::CATEGORIES.each do |category| %>
-      <%= button_to category, chat_messages_path(@chat),
-            params: { message: { content: category } },
-            class: "btn-wrongpath" %>
-    <% end %>
-  </div>
-
   <div id="new_message_container">
     <%= render "messages/form", chat: @chat, message: @message %>
   </div>
