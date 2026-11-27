@@ -36,6 +36,12 @@ class ApplicationController < ActionController::Base
       to_display: false,
       chat: @chat
     )
+    anecdote = JSON.parse(assistant_message.content)
+    image = RubyLLM.paint("Photo réaliste et cinématographique illustrant cette anecdote : #{anecdote['title']}. " \
+                          "Thème : #{anecdote['category']}. Lieu : #{anecdote['address']}, Paris.", model: "gpt-image-2")
+    image.save("public/anecdote-#{assistant_message.id}.png")
+    anecdote["image_url"] = "/anecdote-#{assistant_message.id}.png"
+    assistant_message.update(content: anecdote.to_json)
     assistant_message
   end
 end
