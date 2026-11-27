@@ -7,63 +7,67 @@
 
       <% @favs.each do |fav| %>
 
-        <div class="favs-stack-item">
+        <details class="favs-wallet-details">
 
-          <%# WALLET CARD %>
-          <details class="favs-wallet-details">
+          <%# OVERVIEW - CARD FERMÉE %>
+          <summary
+            class="favs-wallet-summary"
+            style="background-image: linear-gradient(rgba(10, 20, 35, 0.45), rgba(10, 20, 35, 0.65)), url('<%= fav.image_url %>');"
+          >
 
-            <%# CARD SUMMARY %>
-            <summary class="favs-wallet-summary">
+            <div class="wallet-summary-content">
 
-              <div class="wallet-summary-content">
-
-                <div class="wallet-category">
-                  <span></span>
-                  <%= fav.category %>
-                </div>
-
-                <h2><%= fav.title %></h2>
-
-                <div class="wallet-address">
-                  <i class="fa-solid fa-location-dot"></i>
-                  <%= fav.address %>
-                </div>
-
+              <div class="wallet-category">
+                <span></span>
+                <%= fav.category %>
               </div>
 
-              <%# CLOSE LABEL %>
-              <span class="wallet-close-label">
-                <i class="fa-solid fa-chevron-up"></i>
-                Réduire
-              </span>
+              <h2><%= fav.title %></h2>
 
-            </summary>
-
-            <%# FULL GEM CARD %>
-            <div class="favs-expanded-content">
-
-              <%= render "shared/gem_card", gem: fav %>
+              <div class="wallet-address">
+                <i class="fa-solid fa-location-dot"></i>
+                <%= fav.address %>
+              </div>
 
             </div>
 
-          </details>
+          </summary>
 
+          <%# ACTIONS - TOUJOURS AU MEME ENDROIT %>
+          <div class="favs-card-actions">
 
-          <%# DELETE BUTTON %>
-          <%= button_to fav_path(fav),
-            method: :delete,
-            class: "fav-delete",
-            form: { class: "fav-delete-form" } do %>
+            <%# DELETE %>
+            <%= button_to fav_path(fav),
+                  method: :delete,
+                  class: "fav-delete",
+                  form: { class: "fav-delete-form" },
+                  aria: { label: "Supprimer ce favori" } do %>
+              <i class="fa-solid fa-trash"></i>
+              <span class="fav-delete-label">Supprimer cette carte</span>
+            <% end %>
 
-            <i class="fa-solid fa-trash"></i>
+            <%# TOGGLE %>
+            <button
+              type="button"
+              class="wallet-toggle"
+              aria-label="Développer ou réduire"
+              onclick="
+                const card = this.closest('.favs-wallet-details');
+                card.open = !card.open;
+              "
+            >
+              <i class="fa-solid fa-chevron-down wallet-chevron-down"></i>
+              <i class="fa-solid fa-chevron-up wallet-chevron-up"></i>
+            </button>
 
-            <span class="fav-delete-label">
-              Supprimer cette carte
-            </span>
+          </div>
 
-          <% end %>
+          <%# FULL CARD %>
+          <div class="favs-expanded-content">
+            <%= render "shared/gem_card", gem: fav %>
+          </div>
 
-        </div>
+        </details>
 
       <% end %>
 
@@ -71,13 +75,8 @@
 
   <% else %>
 
-    <%# EMPTY STATE %>
     <div class="favs-empty">
-
-      <i class="fa-regular fa-bookmark"></i>
-
-      <p>Vous n'avez pas de favoris pour le moment.</p>
-
+      <p>You haven't saved any gems yet.</p>
     </div>
 
   <% end %>
