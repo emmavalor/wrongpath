@@ -1,4 +1,5 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+
+ // Configure your import map in config/importmap.rb.
 import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
@@ -15,26 +16,26 @@ let diff = 0;
 const threshold = 120;
 
 document.addEventListener("pointerdown", (e) => {
+  if (!cardContainer || !rejectBtn || !likeBtn) return;
+
   startX = e.clientX;
   cardContainer.classList.add("is-dragging");
   console.log(startX);
 });
 
 document.addEventListener("pointermove", (e) => {
-  if (startX === undefined) return;
+  if (startX === undefined || !cardContainer || !rejectBtn || !likeBtn) return;
 
   diff = e.clientX - startX;
 
   if (diff < -threshold) {
-    cardContainer.style.transform = `translateX(${diff}px)
-                                     rotate(${diff * 0.05}deg)`;
+    cardContainer.style.transform = `translateX(${diff}px) rotate(${diff * 0.05}deg)`;
     cardContainer.style.transition = "all 0.2s ease";
     rejectBtn.classList.add("reject-active");
     likeBtn.classList.remove("like-active");
   }
   else if (diff > threshold) {
-    cardContainer.style.transform = `translateX(${diff}px)
-                                     rotate(${diff * 0.05}deg)`;
+    cardContainer.style.transform = `translateX(${diff}px) rotate(${diff * 0.05}deg)`;
     cardContainer.style.transition = "all 0.2s ease";
     rejectBtn.classList.remove("reject-active");
     likeBtn.classList.add("like-active");
@@ -49,46 +50,29 @@ document.addEventListener("pointermove", (e) => {
 
 document.addEventListener("pointerup", () => {
   startX = undefined;
+
+  if (!cardContainer) return;
+
   cardContainer.classList.remove("is-dragging");
   cardContainer.style.transform = "rotate(0deg)";
 });
 
-document.addEventListener("click", (event) => {
-  const expandedContent = event.target.closest(".favs-expanded-content");
-
-  if (!expandedContent) return;
-
-  // Ne pas fermer quand on utilise un lien,
-  // un bouton ou le composant Wikipédia.
-  if (event.target.closest("a, button, input, summary, details")) return;
-
-  const card = expandedContent.closest(".favs-wallet-details");
-
-  if (card && card.open) {
-    card.open = false;
-  }
-});
 
 // ==========================================
-// FAVS - CLOSE CARD ON CONTENT CLICK
+// FAVS - TOGGLE CARD
 // ==========================================
 
 document.addEventListener("click", (event) => {
-  const expandedContent = event.target.closest(".favs-expanded-content");
+  const toggleButton = event.target.closest(".wallet-toggle");
 
-  if (!expandedContent) return;
+  if (!toggleButton) return;
 
-  if (event.target.closest("a, button, input, summary, select, textarea, label")) {
-    return;
-  }
+  event.preventDefault();
+  event.stopPropagation();
 
-  if (event.target.closest(".wiki-details")) {
-    return;
-  }
+  const card = toggleButton.closest(".favs-wallet-details");
 
-  const card = expandedContent.closest(".favs-wallet-details");
-
-  if (card && card.open) {
+  if (card) {
     card.open = false;
   }
 });
@@ -137,11 +121,10 @@ document.addEventListener("click", (event) => {
       return;
     }
 
-    // Deuxième clic : soumission normale du formulaire
+    // Deuxième clic : soumission normale
     return;
   }
 
-  // Annuler si clic ailleurs
   document.querySelectorAll(".fav-delete.is-confirming").forEach((button) => {
     button.classList.remove("is-confirming");
     button.setAttribute("aria-label", "Supprimer ce favori");
