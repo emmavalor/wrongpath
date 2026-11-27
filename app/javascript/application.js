@@ -17,7 +17,7 @@ const threshold = 120;
 document.addEventListener("pointerdown", (e) => {
   startX = e.clientX;
   cardContainer.classList.add("is-dragging");
-  console.log("DOWN");
+  console.log(startX);
 });
 
 document.addEventListener("pointermove", (e) => {
