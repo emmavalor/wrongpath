@@ -5,7 +5,7 @@
   .navigation-banner {
     background: #202B38;
     color: white;
-    padding: 22px;
+    padding: 15px 22px;
     border-radius: 12px;
     margin-bottom: 15px;
     min-height: 115px;
@@ -50,17 +50,17 @@
 
   @media (max-width: 768px) {
     #map {
-      height: 65vh;
+      height: 50vh;
     }
+    #instruction {
+      font-size: 20px;
+    }
+    .navigation-banner {
+    min-height: 60px;
   }
 </style>
 
 <div class="container mt-4 mb-5">
-
-  <h1>Let's go!</h1>
-
-  <h2><%= @destination_title %></h2>
-  <p><%= @destination_address %></p>
 
   <meta name="mapbox-token" content="<%= ENV['MAPBOX_KEY'] %>">
 
@@ -70,13 +70,9 @@
 
       <i id="maneuver-icon"
          class="fa-solid fa-location-arrow fa-2x"></i>
-
       <div>
         <h2 id="instruction">Preparing your route...</h2>
-
-        <p id="instruction-distance">
-          Waiting for GPS
-        </p>
+        <p id="instruction-distance">Waiting for GPS</p>
       </div>
 
     </div>
@@ -107,19 +103,19 @@
             class="btn-wrongpath px-4"
             disabled>
       <i class="fa-solid fa-location-arrow me-2"></i>
-      Start navigation
+      Lancer la navigation
     </button>
 
     <button id="stop-navigation"
             class="btn-wrongpath px-4"
             disabled>
       <i class="fa-solid fa-xmark me-2"></i>
-      End navigation
+      Terminer
     </button>
 
   </div>
 
-  <p id="navigation-status" class="text-center text-muted mt-3">
+  <p id="navigation-status" class="text-center text-muted mt-3 visually-hidden">
     Preparing your route...
   </p>
 
@@ -786,10 +782,6 @@ function initializeNavigation() {
         center: currentLocation,
         zoom: 16
       });
-
-      map.addControl(
-        new mapboxgl.NavigationControl()
-      );
 
       await new Promise((resolve, reject) => {
 

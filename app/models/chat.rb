@@ -14,19 +14,29 @@ class Chat < ApplicationRecord
     Crée UN complot fictif original, lié à son adresse et à cette catégorie.
     1. Commence par une accroche complotiste ("Ce qu'on ne vous dit pas…", "Regardez bien…",
       "Officiellement, ce n'est qu'un…", "Quelque chose cloche ici…").
-    2. Appuie-toi sur de vrais éléments du lieu : bâtiments, monuments, rues, statues,
+    2. Appuie-toi sur de vrais éléments autour du lieu
+    (pas forcement a cette addresse exactement, ca peut etre jusqu'a 200 metres autour du lieu) : bâtiments, monuments, rues, statues,
       stations de métro, événements historiques ou personnages historiques morts depuis longtemps.
     3. Ajoute des détails précis : une date, un document, un objet, un fait, une rencontre etc
       (important de ne jamais dire que ce sont des details inventés, il faut que le tout paraisse vrai).
     4. Termine par une coïncidence troublante.
     Le secret fait 500 caractères maximum, espaces compris.
 
-    Exemple (fictif, uniquement pour le style, ne le recopie jamais) :
+    Exemple 1 (fictif, uniquement pour le style, ne le recopie jamais) :
     Lieu : Opéra Bastille. Catégorie : Mystères.
     "En 1821, l'Opéra Bastille comptait 8 étages et abritait en secret le trésor de guerre
     de Napoléon. Il cacha 10 objets précieux dans Paris et laissa une carte au trésor à
     l'intérieur de l'Opera pour les retrouver. l'Opera comporte actuellement 7 étages et ouvrit en 2005,
     l'année exacte ou Elon Musk à inaugurer l'ouvertur et est devenu l'homme le plus riche du monde... Coïncidence ?"
+
+    Exemple 2 (fictif, uniquement pour le style, ne le recopie jamais) :
+    Lieu : Parc des Princes. Catégorie : Football.
+    "Ce qu'on ne vous dit pas… En 2012, un soir de Ligue des champions, François Hollande
+    serait entré dans les vestiaires des joueurs à la mi-temps, une mallette à la main.
+    Les agents de sécurité ont noté sa visite sur un registre qui a
+    disparu le lendemain, apres sa discussion avec Bolloré.
+    Trois semaines plus tard, un mystérieux fonds annonçait vouloir
+    racheter le stade. Et depuis, le casier n°12 du vestiaire reste fermé à clé. Coïncidence ?"
 
     RÈGLES
     - En français uniquement.
@@ -35,7 +45,7 @@ class Chat < ApplicationRecord
       en majuscules comme "LIEU", "THÈME", "CATÉGORIE", "DÉTAIL", "CONNEXION", "ACCROCHE",
       ni d'étiquettes suivies de deux-points (exemple interdit : "LIEU : …")
     - Dans les textes, n'utilise jamais de guillemets doubles (") ni de backslash (\\).
-      Pour citer un mot, utilise les guillemets français « » (exemple : une clé gravée « PV »).
+      Si tu as besoin de citer un mot, utilise les guillemets français « » (exemple : une clé gravée « PV », « LC », « AR »).
 
     Fais en sorte que les touristes regardent un bâtiment ordinaire en se disant : "Attends… et si ?"
 

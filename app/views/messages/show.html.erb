@@ -1,6 +1,6 @@
 <div class="gem-page" data-controller="swipe">
 
-  <div class="gem-card-wrapper" data-id='<%= @message.id %>'>
+  <div class="gem-card-wrapper" data-id="<%= @message.id %>">
     <%= render "shared/gem_card", gem: JSON.parse(@message.content, symbolize_names: true) %>
   </div>
 
@@ -34,7 +34,7 @@
           method: :post,
           class: "gem-action gem-action--like",
           title: "Like",
-          onclick: "new Audio('/sounds/heroku.mp3').play();" do %>
+          onclick: "new Audio('/sounds/comportement.mp3').play();" do %>
       <i class="fa-solid fa-heart"></i>
     <% end %>
 

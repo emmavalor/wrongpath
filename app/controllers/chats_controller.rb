@@ -10,7 +10,7 @@ class ChatsController < ApplicationController
       first_message
       redirect_to chat_path(@chat)
     else
-      redirect_to root_path, alert: "Please enter an address to unveil its secrets."
+      redirect_to root_path, alert: "Renseignez une adresse pour découvrir la vérité."
     end
   end
 
@@ -29,9 +29,9 @@ class ChatsController < ApplicationController
   end
 
   def first_message
-    message_content = "Bienvenue sur WrongPath 👋🚶‍♂️
-                      Je vois que vous êtes à **#{@chat.input_address}**!
-                      Il y a tellement de choses qu'on nous cache à cette adresse...
+    message_content = "Bienvenue sur WrongPath ! 👋🚶‍♂️
+                      **#{@chat.input_address}**, c'est une adresse interessante !
+                      Il y a tellement de choses qu'on nous cache par ici...
                       Quelle thématique vous intéresse en particulier ?"
     @chat.messages.create!(
       content: message_content,

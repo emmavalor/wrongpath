@@ -32,9 +32,10 @@ function ajouterMessage_assistant(texte) {
 async function lancerSequenceMessages() {
   // 1er message affiché immédiatement
   ajouterMessage_user(input_container.value);
-
+  await sleep(200);
+  input_container.value = "";
   // Attente de 2 secondes --> 2ème message
-  await sleep(1500);
+  await sleep(1300);
   ajouterMessage_assistant("Très bon choix ! Voyons voir ce qu'on nous cache...");
 
   // Attente de 2 secondes --> 3ème message
@@ -46,12 +47,23 @@ async function lancerSequenceMessages() {
   ajouterMessage_assistant('%%#+//%%@$******###');
 
   // Attente de 2 secondes --> 5ème message
-  await sleep(1000);
+  await sleep(2000);
   ajouterMessage_assistant('обход авторизации');
 
-  // Attente de 2 secondes --> 6ème message
-  await sleep(1500);
-  ajouterMessage_assistant("Ah, voilà quelque chose d'intéressant !");
+  await sleep(3000);
+  ajouterMessage_assistant('Deleting system32')
+
+  await sleep(3000);
+  ajouterMessage_assistant('Retrieving credit card details')
+
+  await sleep(2000);
+  ajouterMessage_assistant('Voilà une anecdote intéressante !')
+
+  await sleep(1000);
+  ajouterMessage_assistant('Ah non... Omg... pas ça. Nouvellle recherche')
+
+  await sleep(4000);
+  ajouterMessage_assistant("Ah, voilà !");
 }
 
 
@@ -59,6 +71,5 @@ button.addEventListener("click", (event) => {
   event.preventDefault
   console.log("button clicked")
   console.log(input_container.value);
-
   lancerSequenceMessages();
 });

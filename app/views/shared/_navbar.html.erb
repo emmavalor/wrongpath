@@ -26,22 +26,18 @@
           aria-labelledby="navbarMenu">
 
         <li>
-          <%= link_to "Home", root_path, class: "dropdown-item" %>
-        </li>
-
-        <li>
-          <%= link_to "Discover new secrets", root_path, class: "dropdown-item" %>
+          <%= link_to "Page d'accueil", root_path, data: { turbo: false }, class: "dropdown-item" %>
         </li>
 
         <% if user_signed_in? %>
           <li>
-            <%= link_to "My favs", favs_path, class: "dropdown-item" %>
+            <%= link_to "Mes secrets", favs_path, class: "dropdown-item" %>
           </li>
 
           <li><hr class="dropdown-divider"></li>
 
           <li>
-            <%= link_to "Log out", destroy_user_session_path,
+            <%= link_to "Déconnexion", destroy_user_session_path,
                 data: { turbo_method: :delete },
                 class: "dropdown-item" %>
           </li>
@@ -49,7 +45,7 @@
           <li><hr class="dropdown-divider"></li>
 
           <li>
-            <%= link_to "Sign up / Log in",
+            <%= link_to "Inscription / Identification",
                 new_user_session_path,
                 class: "dropdown-item" %>
           </li>
@@ -60,6 +56,7 @@
 
     <!-- Logo / nom centré et cliquable vers la home -->
     <%= link_to root_path,
+        data: { turbo: false },
         class: "position-absolute top-50 start-50 translate-middle d-flex align-items-center text-decoration-none",
         style: "white-space: nowrap; cursor: pointer;" do %>
 
@@ -94,7 +91,7 @@
 
     <!-- Photo de profil non cliquable -->
     <div class="d-flex align-items-center">
-      <%= image_tag "Emma", class: "avatar", alt: "Profile" if user_signed_in? %>
+      <%= image_tag "Thomas", class: "avatar", alt: "Profile" if user_signed_in? %>
     </div>
 
   </div>
