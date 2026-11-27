@@ -63,7 +63,7 @@ class FavsController < ApplicationController
     @fav = current_user.favs.find(params[:id])
     @fav.destroy
 
-    redirect_to favs_path, notice: "Gem removed from your favorites."
+    redirect_to favs_path, notice: "Carte supprimée"
   end
 
   private
