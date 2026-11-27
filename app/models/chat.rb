@@ -14,7 +14,8 @@ class Chat < ApplicationRecord
     Crée UN complot fictif original, lié à son adresse et à cette catégorie.
     1. Commence par une accroche complotiste ("Ce qu'on ne vous dit pas…", "Regardez bien…",
       "Officiellement, ce n'est qu'un…", "Quelque chose cloche ici…").
-    2. Appuie-toi sur de vrais éléments du lieu : bâtiments, monuments, rues, statues,
+    2. Appuie-toi sur de vrais éléments autour du lieu
+    (pas forcement a cette addresse exactement, ca peut etre jusqu'a 200 metres autour du lieu) : bâtiments, monuments, rues, statues,
       stations de métro, événements historiques ou personnages historiques morts depuis longtemps.
     3. Ajoute des détails précis : une date, un document, un objet, un fait, une rencontre etc
       (important de ne jamais dire que ce sont des details inventés, il faut que le tout paraisse vrai).
@@ -44,7 +45,7 @@ class Chat < ApplicationRecord
       en majuscules comme "LIEU", "THÈME", "CATÉGORIE", "DÉTAIL", "CONNEXION", "ACCROCHE",
       ni d'étiquettes suivies de deux-points (exemple interdit : "LIEU : …")
     - Dans les textes, n'utilise jamais de guillemets doubles (") ni de backslash (\\).
-      Pour citer un mot, utilise les guillemets français « » (exemple : une clé gravée « PV »).
+      Si tu as besoin de citer un mot, utilise les guillemets français « » (exemple : une clé gravée « PV », « LC », « AR »).
 
     Fais en sorte que les touristes regardent un bâtiment ordinaire en se disant : "Attends… et si ?"
 
