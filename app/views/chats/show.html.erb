@@ -4,16 +4,28 @@
       <% @chat.messages.where(to_display: [true, nil]).each do |message| %>
         <%= render "messages/message", message: message %>
       <% end %>
+
+      <template id="user_message">
+        <div class="message-container container-user">
+          <div class="message message-user">
+            <p>Coucou c'est le user</p>
+          </div>
+          <%= image_tag "Emma.jpeg", alt: "Description de l'image", class:"avatar" %>
+        </div>
+      </template>
+
+      <template id="assistant_message">
+        <div class="message-container">
+          <%= image_tag "wrongpath_logo_text.png", alt: "Description de l'image", class:"avatar" %>
+          <div class="message message-assistant">
+            <p>Coucou c'est l assistant</p>
+          </div>
+        </div>
+      </template>
+
     </div>
   </div>
 
-  <div class="category-buttons">
-    <% Chat::CATEGORIES.each do |category| %>
-      <%= button_to category, chat_messages_path(@chat),
-            params: { message: { content: category } },
-            class: "btn-wrongpath" %>
-    <% end %>
-  </div>
 
   <div id="new_message_container">
     <%= render "messages/form", chat: @chat, message: @message %>
