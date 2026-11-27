@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     resources :messages, only: [ :create, :show, :destroy ]
   end
 
-  resources :favs, only: [ :create, :show, :destroy ] do
+  resources :favs, only: [ :index, :create, :show, :destroy ] do
     member do
       get :navigate
     end

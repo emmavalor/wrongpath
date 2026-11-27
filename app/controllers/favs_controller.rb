@@ -1,4 +1,8 @@
 class FavsController < ApplicationController
+
+  def index
+    @favs = current_user.favs.order(created_at: :desc)
+  end
   def create
     @message = Message.find(params[:message_id])
     @chat = @message.chat
@@ -54,7 +58,12 @@ class FavsController < ApplicationController
     @destination_address = @temp_gem[:address]
     @destination_title = @temp_gem[:title]
   end
+
   def destroy
+    @fav = current_user.favs.find(params[:id])
+    @fav.destroy
+
+    redirect_to favs_path, notice: "Gem removed from your favorites."
   end
 
   private
