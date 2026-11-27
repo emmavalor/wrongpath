@@ -1,2 +1,85 @@
-<h1>Favs#index</h1>
-<p>Find me in app/views/favs/index.html.erb</p>
+
+<div class="favs-page">
+
+  <% if @favs.any? %>
+
+    <div class="favs-stack">
+
+      <% @favs.each do |fav| %>
+
+        <div class="favs-stack-item">
+
+          <%# WALLET CARD %>
+          <details class="favs-wallet-details">
+
+            <%# CARD SUMMARY %>
+            <summary class="favs-wallet-summary">
+
+              <div class="wallet-summary-content">
+
+                <div class="wallet-category">
+                  <span></span>
+                  <%= fav.category %>
+                </div>
+
+                <h2><%= fav.title %></h2>
+
+                <div class="wallet-address">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <%= fav.address %>
+                </div>
+
+              </div>
+
+              <%# CLOSE LABEL %>
+              <span class="wallet-close-label">
+                <i class="fa-solid fa-chevron-up"></i>
+                Réduire
+              </span>
+
+            </summary>
+
+            <%# FULL GEM CARD %>
+            <div class="favs-expanded-content">
+
+              <%= render "shared/gem_card", gem: fav %>
+
+            </div>
+
+          </details>
+
+
+          <%# DELETE BUTTON %>
+          <%= button_to fav_path(fav),
+            method: :delete,
+            class: "fav-delete",
+            form: { class: "fav-delete-form" } do %>
+
+            <i class="fa-solid fa-trash"></i>
+
+            <span class="fav-delete-label">
+              Supprimer cette carte
+            </span>
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  <% else %>
+
+    <%# EMPTY STATE %>
+    <div class="favs-empty">
+
+      <i class="fa-regular fa-bookmark"></i>
+
+      <p>Vous n'avez pas de favoris pour le moment.</p>
+
+    </div>
+
+  <% end %>
+
+</div>
