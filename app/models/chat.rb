@@ -46,6 +46,7 @@ class Chat < ApplicationRecord
       ni d'étiquettes suivies de deux-points (exemple interdit : "LIEU : …")
     - Dans les textes, n'utilise jamais de guillemets doubles (") ni de backslash (\\).
       Si tu as besoin de citer un mot, utilise les guillemets français « » (exemple : une clé gravée « PV », « LC », « AR »).
+    - Ne reprend pas la même histoire, tournure de phrase, titre que ce que tu as fais précedemment.
 
     Fais en sorte que les touristes regardent un bâtiment ordinaire en se disant : "Attends… et si ?"
 

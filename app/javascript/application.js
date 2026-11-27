@@ -6,104 +6,135 @@ import "@popperjs/core"
 import "bootstrap"
 
 
-// const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-// const cardContainer = document.querySelector('.gem-card-wrapper');
-// const rejectBtn = document.querySelector('.gem-action--reject');
-// const likeBtn = document.querySelector('.gem-action--like');
 
-// let startX;
-// let diff = 0;
-// let action;
+ // Configure your import map in config/importmap.rb.
+import "@hotwired/turbo-rails"
+import "controllers"
+import "@popperjs/core"
+import "bootstrap"
+// import "swipe"
 
-// const threshold = 120;
+const cardContainer = document.querySelector('.gem-card-wrapper');
+const rejectBtn = document.querySelector('.gem-action--reject');
+const likeBtn = document.querySelector('.gem-action--like');
 
-// const create_fav = () => {
-//   fetch("/favs", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Accept": "text/html",
-//         "X-CSRF-Token": csrfToken
-//       },
-//       body: JSON.stringify({
-//         message_id: cardContainer.dataset.id
-//       })
-//     })
-//       .then(response => {
-//         if (!response.ok) {
-//           throw new Error(`Erreur HTTP : ${response.status}`);
-//         }
-//         return response.json();
-//       })
-//       .then(data => {
-//         console.log(data.message);
-//       })
-//       .catch(error => console.error("Erreur :", error));
-// }
+let startX;
+let diff = 0;
 
-// document.addEventListener("pointerdown", (e) => {
-//   if (!cardContainer || !rejectBtn || !likeBtn) return;
+const threshold = 120;
 
-//   startX = e.clientX;
-//   cardContainer.classList.add("is-dragging");
-// });
+document.addEventListener("pointerdown", (e) => {
+  if (!cardContainer || !rejectBtn || !likeBtn) return;
 
-// document.addEventListener("pointermove", (e) => {
-//   if (startX === undefined || !cardContainer || !rejectBtn || !likeBtn) return;
+  startX = e.clientX;
+  cardContainer.classList.add("is-dragging");
+  console.log(startX);
+});
 
-//   diff = e.clientX - startX;
+document.addEventListener("pointermove", (e) => {
+  if (startX === undefined || !cardContainer || !rejectBtn || !likeBtn) return;
 
-//   if (diff < -threshold) {
-//     leftSwipe();
-//     action = "destroy"
-//   }
-//   else if (diff > threshold) {
-//     rightSwipe();
-//     action = "create"
-//   }
-//   else {
-//     cardContainer.style.transform = "rotate(0deg)";
-//     cardContainer.style.transition = "all 0.2s ease";
-//     rejectBtn.classList.remove("reject-active");
-//     likeBtn.classList.remove("like-active");
-//   }
-// });
+  diff = e.clientX - startX;
 
-// document.addEventListener("pointerup", () => {
-//   startX = undefined;
+  if (diff < -threshold) {
+    cardContainer.style.transform = `translateX(${diff}px) rotate(${diff * 0.05}deg)`;
+    cardContainer.style.transition = "all 0.2s ease";
+    rejectBtn.classList.add("reject-active");
+    likeBtn.classList.remove("like-active");
+  }
+  else if (diff > threshold) {
+    cardContainer.style.transform = `translateX(${diff}px) rotate(${diff * 0.05}deg)`;
+    cardContainer.style.transition = "all 0.2s ease";
+    rejectBtn.classList.remove("reject-active");
+    likeBtn.classList.add("like-active");
+  }
+  else {
+    cardContainer.style.transform = "rotate(0deg)";
+    cardContainer.style.transition = "all 0.2s ease";
+    rejectBtn.classList.remove("reject-active");
+    likeBtn.classList.remove("like-active");
+  }
+});
 
-//   if (!cardContainer) return;
+document.addEventListener("pointerup", () => {
+  startX = undefined;
 
-//   cardContainer.classList.remove("is-dragging");
-//   likeBtn.classList.remove("like-active");
-//   rejectBtn.classList.remove("reject-active");
-//   cardContainer.style.transform = "rotate(0deg)";
-//   if (action === "create") {
-//     create_fav();
-//   }
-// });
+  if (!cardContainer) return;
 
-// // likeBtn.addEventListener("click", () => {
-// //   rightSwipe();
-// // })
+  cardContainer.classList.remove("is-dragging");
+  cardContainer.style.transform = "rotate(0deg)";
+});
 
-// // rejectBtn.addEventListener("click", () => {
 
-// //   leftSwipe();
-// // })
+// ==========================================
+// FAVS - TOGGLE CARD
+// ==========================================
 
-// const rightSwipe = () => {
-//   cardContainer.style.transform = `translateX(${diff}px)
-//                                    rotate(${diff * 0.05}deg)`;
-//   cardContainer.style.transition = "all 0.2s ease";
-//   rejectBtn.classList.remove("reject-active");
-//   likeBtn.classList.add("like-active");
-// }
+document.addEventListener("click", (event) => {
+  const toggleButton = event.target.closest(".wallet-toggle");
 
-// const leftSwipe = () => {
-//   cardContainer.style.transform = `translateX(${diff}px)
-//                                    rotate(${diff * 0.05}deg)`;
-//   cardContainer.style.transition = "all 0.2s ease";
-//   rejectBtn.classList.add("reject-active");
-//   likeBtn.classList.remove("like-active");
-// }
+  if (!toggleButton) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  const card = toggleButton.closest(".favs-wallet-details");
+
+  if (card) {
+    card.open = false;
+  }
+});
+
+
+// ==========================================
+// FAVS - ONLY ONE CARD OPEN AT A TIME
+// ==========================================
+
+document.addEventListener("toggle", (event) => {
+  const openedCard = event.target;
+
+  if (
+    !openedCard.matches(".favs-wallet-details") ||
+    !openedCard.open
+  ) {
+    return;
+  }
+
+  document.querySelectorAll(".favs-wallet-details[open]").forEach((card) => {
+    if (card !== openedCard) {
+      card.open = false;
+    }
+  });
+}, true);
+
+
+// ==========================================
+// FAVS - DELETE CONFIRMATION
+// ==========================================
+
+document.addEventListener("click", (event) => {
+  const deleteButton = event.target.closest(".fav-delete");
+
+  if (deleteButton) {
+    if (!deleteButton.classList.contains("is-confirming")) {
+      event.preventDefault();
+
+      document.querySelectorAll(".fav-delete.is-confirming").forEach((button) => {
+        button.classList.remove("is-confirming");
+      });
+
+      deleteButton.classList.add("is-confirming");
+      deleteButton.setAttribute("aria-label", "Confirmer la suppression");
+
+      return;
+    }
+
+    // Deuxième clic : soumission normale
+    return;
+  }
+
+  document.querySelectorAll(".fav-delete.is-confirming").forEach((button) => {
+    button.classList.remove("is-confirming");
+    button.setAttribute("aria-label", "Supprimer ce favori");
+  });
+});
