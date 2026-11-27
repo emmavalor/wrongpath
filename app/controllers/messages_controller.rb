@@ -2,8 +2,14 @@ class MessagesController < ApplicationController
   before_action :authenticate_user!, :find_chat
 
   def show
-    @temp_favs = @chat.messages.where(to_display: false).where("content::jsonb ->> 'category' != ''")
-    @message = @temp_favs[0]
+    # ANCIEN CODE
+    # @temp_favs = @chat.messages.where(to_display: false).where("content::jsonb ->> 'category' != ''")
+    # @message = @temp_favs[0]
+
+    @chat = current_user.chats.find(params[:chat_id])
+    @gem_messages = @chat.messages.where(to_display: false)
+    @message = @gem_messages[0]
+
   end
 
   def create
@@ -13,15 +19,19 @@ class MessagesController < ApplicationController
     @message.role = "user"
 
     if @message.save
-      create_message_llm(@message)
-      if Chat::CATEGORIES.include?(@message.content)
-        redirect_to chat_message_path(@chat, @message)
-      else
-        respond_to do |format|
-          format.turbo_stream # renders app/views/messages/create.turbo_stream.erb (like lecture)
-          format.html { redirect_to chat_path(@chat) }
-        end
-      end
+      @assistant_message = create_message_llm(@message)
+      redirect_to chat_message_path(@chat, @assistant_message)
+
+      # ANCIEN CODE :
+      # create_message_llm(@message)
+      # if Chat::CATEGORIES.include?(@message.content)
+      #   redirect_to chat_message_path(@chat, @message)
+      # else
+      #   respond_to do |format|
+      #     format.turbo_stream # renders app/views/messages/create.turbo_stream.erb (like lecture)
+      #     format.html { redirect_to chat_path(@chat) }
+      #   end
+      # end
     else
       redirect_to chat_path(@chat), alert: @message.errors.full_messages.to_sentence
     end
