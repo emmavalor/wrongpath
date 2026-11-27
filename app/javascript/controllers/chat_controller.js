@@ -55,18 +55,14 @@ async function lancerSequenceMessages() {
   ajouterMessage_assistant('Deleting system32')
 
   await sleep(3000);
-  ajouterMessage_assistant('Retrieve credit card details')
+  ajouterMessage_assistant('Retrieving credit card details')
 
   await sleep(2000);
   ajouterMessage_assistant('Voilà une anecdote intéressante !')
 
   await sleep(1000);
-  ajouterMessage_assistant('Ah non... Omg... pas ça.')
+  ajouterMessage_assistant('Ah non... Omg... pas ça. Nouvellle recherche')
 
-  await sleep(1000);
-  ajouterMessage_assistant('Nouvelle recherche.')
-
-  // Attente de 2 secondes --> 6ème message
   await sleep(4000);
   ajouterMessage_assistant("Ah, voilà !");
 }
