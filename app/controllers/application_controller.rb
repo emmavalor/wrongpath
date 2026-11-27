@@ -18,12 +18,8 @@ class ApplicationController < ActionController::Base
     "The user's location: #{@chat.location}."
   end
 
-  def stage_context
-    "You are in STAGE 2. The user's message is the category they chose."
-  end
-
   def instructions
-    [Chat::SYSTEM_PROMPT, location_context, stage_context].compact.join("\n\n")
+    [Chat::SYSTEM_PROMPT, location_context].compact.join("\n\n")
   end
 
   def create_message_llm(message)

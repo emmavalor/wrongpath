@@ -47,7 +47,7 @@ class MessagesController < ApplicationController
     removed_fav = @temp_favs.shift
     return redirect_to chat_path(@chat) unless removed_fav
 
-    new_fav = create_message_llm(removed_fav)
+    new_fav = create_message_llm(@chat.messages.first(2).last)
     @temp_favs << new_fav
     removed_fav.destroy!
     redirect_to chat_message_path(@chat, @temp_favs.first)

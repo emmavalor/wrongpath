@@ -1,10 +1,10 @@
-<div class="gem-page">
+<div class="gem-page" data-controller="swipe">
 
   <div class="gem-card-wrapper" data-id='<%= @message.id %>'>
     <%= render "shared/gem_card", gem: JSON.parse(@message.content, symbolize_names: true) %>
   </div>
 
-  <div class="gem-actions">
+  <div class="gem-actions" >
 
     <%# PASS %>
     <%= button_to chat_message_path(@chat, @message),
