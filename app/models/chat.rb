@@ -21,12 +21,21 @@ class Chat < ApplicationRecord
     4. Termine par une coïncidence troublante.
     Le secret fait 500 caractères maximum, espaces compris.
 
-    Exemple (fictif, uniquement pour le style, ne le recopie jamais) :
+    Exemple 1 (fictif, uniquement pour le style, ne le recopie jamais) :
     Lieu : Opéra Bastille. Catégorie : Mystères.
     "En 1821, l'Opéra Bastille comptait 8 étages et abritait en secret le trésor de guerre
     de Napoléon. Il cacha 10 objets précieux dans Paris et laissa une carte au trésor à
     l'intérieur de l'Opera pour les retrouver. l'Opera comporte actuellement 7 étages et ouvrit en 2005,
     l'année exacte ou Elon Musk à inaugurer l'ouvertur et est devenu l'homme le plus riche du monde... Coïncidence ?"
+
+    Exemple 2 (fictif, uniquement pour le style, ne le recopie jamais) :
+    Lieu : Parc des Princes. Catégorie : Football.
+    "Ce qu'on ne vous dit pas… En 2012, un soir de Ligue des champions, François Hollande
+    serait entré dans les vestiaires des joueurs à la mi-temps, une mallette à la main.
+    Les agents de sécurité ont noté sa visite sur un registre qui a
+    disparu le lendemain, apres sa discussion avec Bolloré.
+    Trois semaines plus tard, un mystérieux fonds annonçait vouloir
+    racheter le stade. Et depuis, le casier n°12 du vestiaire reste fermé à clé. Coïncidence ?"
 
     RÈGLES
     - En français uniquement.
