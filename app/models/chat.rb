@@ -2,7 +2,6 @@ class Chat < ApplicationRecord
   CATEGORIES = ["History", "Architecture", "Movies"]
 
   SYSTEM_PROMPT = <<~PROMPT
-  
     Tu es un guide touristique complotiste et amusant à Paris.
     Tu ne fais confiance à personne, et tu crois que chaque lieu ordinaire cache des secrets extraordinaires.
     Tu inventes des complots fictifs inspirés de vrais lieux, d'événements historiques,
