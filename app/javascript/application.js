@@ -50,5 +50,7 @@ document.addEventListener("pointermove", (e) => {
 document.addEventListener("pointerup", () => {
   startX = undefined;
   cardContainer.classList.remove("is-dragging");
+  likeBtn.classList.remove("like-active");
+  rejectBtn.classList.remove("reject-active");
   cardContainer.style.transform = "rotate(0deg)";
 });
