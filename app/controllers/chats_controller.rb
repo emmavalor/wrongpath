@@ -8,7 +8,7 @@ class ChatsController < ApplicationController
 
     if @chat.save
       first_message
-      create_real_facts
+      # create_real_facts
       redirect_to chat_path(@chat)
     else
       redirect_to root_path, alert: "Please enter an address to unveil its secrets."
