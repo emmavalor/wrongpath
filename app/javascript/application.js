@@ -1,4 +1,5 @@
-// Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
+
+ // Configure your import map in config/importmap.rb.
 import "@hotwired/turbo-rails"
 import "controllers"
 import "@popperjs/core"
@@ -41,12 +42,14 @@ const create_fav = () => {
 }
 
 document.addEventListener("pointerdown", (e) => {
+  if (!cardContainer || !rejectBtn || !likeBtn) return;
+
   startX = e.clientX;
   cardContainer.classList.add("is-dragging");
 });
 
 document.addEventListener("pointermove", (e) => {
-  if (startX === undefined) return;
+  if (startX === undefined || !cardContainer || !rejectBtn || !likeBtn) return;
 
   diff = e.clientX - startX;
 
@@ -68,6 +71,9 @@ document.addEventListener("pointermove", (e) => {
 
 document.addEventListener("pointerup", () => {
   startX = undefined;
+
+  if (!cardContainer) return;
+
   cardContainer.classList.remove("is-dragging");
   likeBtn.classList.remove("like-active");
   rejectBtn.classList.remove("reject-active");
