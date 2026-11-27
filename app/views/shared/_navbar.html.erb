@@ -26,7 +26,7 @@
           aria-labelledby="navbarMenu">
 
         <li>
-          <%= link_to "Page d'acceuil", root_path, class: "dropdown-item" %>
+          <%= link_to "Page d'accueil", root_path, data: { turbo: false }, class: "dropdown-item" %>
         </li>
 
         <% if user_signed_in? %>
@@ -56,6 +56,7 @@
 
     <!-- Logo / nom centré et cliquable vers la home -->
     <%= link_to root_path,
+        data: { turbo: false },
         class: "position-absolute top-50 start-50 translate-middle d-flex align-items-center text-decoration-none",
         style: "white-space: nowrap; cursor: pointer;" do %>
 
